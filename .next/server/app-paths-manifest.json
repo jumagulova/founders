@@ -1,0 +1,11 @@
+{
+  "/books/page": "app/books/page.js",
+  "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/founders/page": "app/founders/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/about/page": "app/about/page.js",
+  "/terms/page": "app/terms/page.js"
+}
