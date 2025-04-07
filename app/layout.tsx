@@ -1,18 +1,21 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://foundersforkids.com';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE_URL),
   title: {
+    default: 'Founders for Kids - Inspiring Children Through Stories',
     template: '%s | Founders for Kids',
-    default: 'Founders for Kids | True Stories of Dreamers, Doers, and Builders',
   },
-  description: 'Inspiring children\'s books about real founders and entrepreneurs who changed the world with their ideas and determination.',
+  description: 'Learn about inspiring founders and entrepreneurs through engaging stories and books designed for kids. Discover lessons in innovation, perseverance, and problem-solving.',
   keywords: ['children books', 'entrepreneur books', 'founder stories', 'kids books', 'educational books'],
   authors: [{ name: 'Founders for Kids' }],
   creator: 'Founders for Kids',
@@ -23,26 +26,26 @@ export const metadata: Metadata = {
     address: false,
   },
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://foundersforkids.com',
+    title: 'Founders for Kids - Inspiring Children Through Stories',
+    description: 'Engaging stories and books about innovative founders for kids.',
+    url: BASE_URL,
     siteName: 'Founders for Kids',
-    title: 'Founders for Kids | True Stories of Dreamers, Doers, and Builders',
-    description: 'Inspiring children\'s books about real founders and entrepreneurs who changed the world with their ideas and determination.',
     images: [
       {
-        url: 'https://foundersforkids.com/og-image.jpg',
+        url: `${BASE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: 'Founders for Kids - Children\'s books about entrepreneurs',
-      },
+        alt: 'Founders for Kids Logo',
+      }
     ],
+    locale: 'en_US',
+    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Founders for Kids | True Stories of Dreamers, Doers, and Builders',
-    description: 'Inspiring children\'s books about real founders and entrepreneurs who changed the world with their ideas and determination.',
-    images: ['https://foundersforkids.com/twitter-image.jpg'],
+    title: 'Founders for Kids - Inspiring Children Through Stories',
+    description: 'Engaging stories and books about innovative founders for kids.',
+    images: [`${BASE_URL}/twitter-image.png`],
     creator: '@foundersforkids',
   },
   robots: {
@@ -67,6 +70,17 @@ export const metadata: Metadata = {
   },
 }
 
+const organizationStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Founders for Kids',
+  url: BASE_URL,
+  logo: `${BASE_URL}/logo.png`,
+  contactPoint: {
+    '@type': 'ContactPoint',
+  }
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -74,11 +88,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        <main className="min-h-screen">
-          {children}
-        </main>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
+        />
+      </head>
+      <body className={`${inter.className} bg-gray-50`}>
+        <Header />
+        <main>{children}</main>
         <Footer />
         <Script id="reveal-animation">
           {`

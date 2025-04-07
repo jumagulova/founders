@@ -1,11 +1,12 @@
 {
-  "/books/page": "app/books/page.js",
-  "/page": "app/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/sitemap.xml/route": "app/sitemap.xml/route.js",
-  "/founders/page": "app/founders/page.js",
+  "/page": "app/page.js",
   "/robots.txt/route": "app/robots.txt/route.js",
+  "/books/page": "app/books/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/privacy/page": "app/privacy/page.js",
+  "/founders/page": "app/founders/page.js",
   "/about/page": "app/about/page.js",
+  "/founders/[slug]/page": "app/founders/[slug]/page.js",
   "/terms/page": "app/terms/page.js"
 }

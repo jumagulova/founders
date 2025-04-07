@@ -1,11 +1,18 @@
 "use client"
 
 import Link from 'next/link'
-import { useState, FormEvent } from 'react'
+import Image from 'next/image'
+import { useState, FormEvent, useEffect } from 'react'
 
 export default function Footer() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
+  const [timestamp, setTimestamp] = useState('')
+  
+  useEffect(() => {
+    // Generate a random timestamp to force reload of image
+    setTimestamp(Date.now().toString())
+  }, [])
 
   const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -47,10 +54,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
-            <Link href="/" className="inline-block mb-4">
-              <span className="text-xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                Founders for Kids
-              </span>
+            <Link href="/">
+              <Image 
+                src="/logo.png"
+                alt="Founders for Kids Logo" 
+                width={180}
+                height={45}
+                className="h-9 w-auto mb-4"
+              />
             </Link>
             <p className="text-gray-600 mb-6 text-sm">
               True stories of dreamers, doers, and builders for the next generation of entrepreneurs.
