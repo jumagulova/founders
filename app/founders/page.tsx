@@ -27,12 +27,13 @@ export default function FoundersPage() {
           {foundersData.map((founder) => (
             <div key={founder.slug} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow">
               <div>
-                <div className="h-64 relative">
+                <div className="aspect-[3/4] relative bg-gray-100">
                   <Image
                     src={founder.image}
                     alt={founder.name}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 </div>
                 <div className="p-6">

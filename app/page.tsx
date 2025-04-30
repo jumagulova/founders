@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, FormEvent } from 'react'
+import booksData from '@/data/books' // Import book data
 
 export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
@@ -39,6 +40,9 @@ export default function Home() {
       setFormSubmitted(true)
     }
   }
+
+  // Filter for available books to feature
+  const featuredBooks = booksData.filter(book => book.status === 'available').slice(0, 3); // Show top 3 available
 
   return (
     <div className="bg-white font-sans">
@@ -92,122 +96,48 @@ export default function Home() {
       </section>
 
       {/* Featured Books Section - Edgy Design */}
-      <section className="py-20 bg-gradient-to-b from-indigo-50 to-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-purple-600 to-transparent opacity-10"></div>
-        <div className="absolute top-40 right-20 w-72 h-72 bg-yellow-200 rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-pink-200 rounded-full opacity-20 blur-3xl"></div>
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16">
-            <div className="reveal-element">
-              <h2 className="text-5xl font-black mb-4 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
-                Featured Books
-              </h2>
-              <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full"></div>
-            </div>
-            <p className="text-lg text-gray-600 max-w-xl mt-4 md:mt-0 font-light reveal-element">
-              Curious about how famous brands got started? Here are a few highlights from our series.
-            </p>
-          </div>
-          
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-blue-600">Featured Books</h2>
+          <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Get inspired by the stories of world-changing founders.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {/* Book 1 */}
-            <div className="group relative reveal-element h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-3xl transform group-hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100 blur-sm"></div>
-              <div className="bg-white rounded-3xl p-8 shadow-xl border border-blue-100 relative z-10 transform transition-all duration-300 group-hover:translate-y-2 group-hover:-translate-x-2 h-full flex flex-col">
-                <div className="relative h-80 mb-6 overflow-hidden rounded-xl">
-                  <Image 
-                    src="/phil-knight-book.jpg" 
-                    alt="Phil Knight Book" 
-                    fill
-                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="text-xs font-bold bg-blue-400 text-black px-2 py-1 rounded-full">NEW RELEASE</span>
+            {featuredBooks.map((book) => (
+               <div key={book.slug} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
+                {book.image ? (
+                   <div className="h-80 relative bg-gray-100">
+                    <Image
+                      src={book.image}
+                      alt={`Book cover for ${book.title}`}
+                      fill
+                      className="object-contain p-4" 
+                    />
                   </div>
+                ) : (
+                  <div className="h-80 bg-gray-200 flex items-center justify-center text-gray-500">Image coming soon</div>
+                )}
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-xl font-bold mb-2 text-blue-600">{book.title}</h3>
+                  <p className="text-gray-600 mb-4 text-sm flex-grow">{book.description}</p>
+                   <Link 
+                     href={book.amazonLink || '#'} 
+                     target="_blank" 
+                     rel="noopener noreferrer"
+                     className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full font-semibold text-sm hover:from-purple-700 hover:to-pink-600 transition duration-300 inline-block text-center mt-auto"
+                   >
+                     View on Amazon
+                   </Link>
                 </div>
-                <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Phil Knight, Founder of Nike</h3>
-                <p className="text-gray-600 mb-6 flex-grow">The story of how a college project turned into the world's biggest sports brand.</p>
-                <a 
-                  href="https://amazon.com" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-3 rounded-full font-bold transition-all mt-auto"
-                >
-                  Buy Now on Amazon
-                </a>
               </div>
-            </div>
-            
-            {/* Book 2 */}
-            <div className="group relative reveal-element animation-delay-200 h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-red-500 rounded-3xl transform group-hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100 blur-sm"></div>
-              <div className="bg-white rounded-3xl p-8 shadow-xl border border-pink-100 relative z-10 transform transition-all duration-300 group-hover:translate-y-2 group-hover:-translate-x-2 h-full flex flex-col">
-                <div className="relative h-80 mb-6 overflow-hidden rounded-xl">
-                  <Image 
-                    src="/reed-hastings-book.jpg" 
-                    alt="Reed Hastings Book" 
-                    fill
-                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="text-xs font-bold bg-pink-400 text-black px-2 py-1 rounded-full">BESTSELLER</span>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-pink-500 to-red-500 bg-clip-text text-transparent">Reed Hastings, Founder of Netflix</h3>
-                <p className="text-gray-600 mb-6 flex-grow">How a late fee at a video store sparked a revolution in how we watch TV.</p>
-                <a 
-                  href="https://amazon.com" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white px-6 py-3 rounded-full font-bold transition-all mt-auto"
-                >
-                  Buy Now on Amazon
-                </a>
-              </div>
-            </div>
-            
-            {/* Book 3 */}
-            <div className="group relative reveal-element animation-delay-400 h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-3xl transform group-hover:scale-105 transition-all duration-300 opacity-0 group-hover:opacity-100 blur-sm"></div>
-              <div className="bg-white rounded-3xl p-8 shadow-xl border border-yellow-100 relative z-10 transform transition-all duration-300 group-hover:translate-y-2 group-hover:-translate-x-2 h-full flex flex-col">
-                <div className="relative h-80 mb-6 overflow-hidden rounded-xl">
-                  <Image 
-                    src="/sara-blakely-book.jpg" 
-                    alt="Sara Blakely Book" 
-                    fill
-                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="text-xs font-bold bg-orange-400 text-black px-2 py-1 rounded-full">POPULAR</span>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">Sara Blakely, Founder of Spanx</h3>
-                <p className="text-gray-600 mb-6 flex-grow">Sara wanted comfy clothes that looked good. She made it happen with Spanx.</p>
-                <a 
-                  href="https://amazon.com" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-full font-bold transition-all mt-auto"
-                >
-                  Buy Now on Amazon
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
-          
-          {/* Add See More Books button */}
-          <div className="mt-16 text-center reveal-element animation-delay-500">
-            <Link 
-              href="/books" 
-              className="inline-block bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              See More Books
-            </Link>
-          </div>
+           {/* Optional: Link to the full books page */}
+           <div className="text-center mt-12">
+              <Link href="/books" className="text-purple-600 font-semibold hover:text-pink-500 transition">
+                See All Books &rarr;
+              </Link>
+           </div>
         </div>
       </section>
 

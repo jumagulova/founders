@@ -63,10 +63,10 @@ export function generateStaticParams() {
 }
 
 export default function FounderPage({ params }: { params: { slug: string } }) {
-  const founder = foundersData.find(founder => founder.slug === params.slug)
-  
+  const founder = foundersData.find((f) => f.slug === params.slug);
+
   if (!founder) {
-    return notFound()
+    notFound();
   }
 
   // Define Article Structured Data
@@ -98,7 +98,7 @@ export default function FounderPage({ params }: { params: { slug: string } }) {
   }
   
   return (
-    <main className="pt-16 pb-32">
+    <main className="pt-16 pb-32 bg-gray-50">
       {/* Add JSON-LD Script for Structured Data */}
       <script
         type="application/ld+json"
@@ -107,15 +107,16 @@ export default function FounderPage({ params }: { params: { slug: string } }) {
 
       <div className="container mx-auto px-4">
         {/* Founder Hero Section */}
-        <div className="flex flex-col md:flex-row gap-8 mb-12">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start mb-12">
           <div className="w-full md:w-1/3">
-            <div className="rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden shadow-lg bg-gray-200">
               <Image 
                 src={founder.image} 
                 alt={founder.name}
-                width={400}
-                height={400}
-                className="w-full h-auto"
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                priority
               />
             </div>
           </div>
@@ -136,7 +137,7 @@ export default function FounderPage({ params }: { params: { slug: string } }) {
         
         {/* Founder Story */}
         <article className="prose prose-lg max-w-none mb-16">
-          {founder.fullBio.split('\n\n').map((paragraph, index) => (
+          {founder.bio.map((paragraph, index) => ( 
             <p key={index} className="mb-6 text-gray-700 leading-relaxed">
               {paragraph}
             </p>
