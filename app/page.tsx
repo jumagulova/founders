@@ -120,6 +120,27 @@ export default function Home() {
                 <div className="p-6 flex flex-col flex-grow">
                   <h3 className="text-xl font-bold mb-2 text-blue-600">{book.title}</h3>
                   <p className="text-gray-600 mb-4 text-sm flex-grow">{book.description}</p>
+                  {book.rating && (
+                    <div className="flex items-center mb-2">
+                      <div className="flex items-center mr-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            key={star}
+                            className={`text-lg ${
+                              star <= Math.floor(book.rating!.stars) || 
+                              (star === 5 && book.rating!.stars >= 4.5)
+                                ? 'text-yellow-500'
+                                : 'text-gray-300'
+                            }`}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                      <span className="font-semibold text-gray-800">{book.rating.stars}</span>
+                      <span className="text-gray-500 ml-2 text-sm">({book.rating.reviews} reviews)</span>
+                    </div>
+                  )}
                    <Link 
                      href={book.amazonLink || '#'} 
                      target="_blank" 

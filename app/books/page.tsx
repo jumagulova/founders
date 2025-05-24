@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import NewsletterSignup from '@/components/NewsletterSignup'
-import booksData from '@/data/books' // Import the new book data
+import booksData from '@/data/books'
+import { Book } from '@/types'
 
 export const metadata = {
   title: 'Books | Founders for Kids',
@@ -55,6 +56,27 @@ export default function Books() {
                   <div className="p-6 flex flex-col flex-grow"> {/* Ensure text content takes space */}
                     <h3 className="text-xl font-bold mb-2 text-blue-600">{book.title}</h3>
                     <p className="text-gray-600 mb-4 text-sm flex-grow">{book.description}</p>
+                    {book.rating && (
+                      <div className="flex items-center mb-2">
+                        <div className="flex items-center mr-2">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                              key={star}
+                              className={`text-lg ${
+                                star <= Math.floor(book.rating!.stars) || 
+                                (star === 5 && book.rating!.stars >= 4.5)
+                                  ? 'text-yellow-500'
+                                  : 'text-gray-300'
+                              }`}
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                        <span className="font-semibold text-gray-800">{book.rating.stars}</span>
+                        <span className="text-gray-500 ml-2 text-sm">({book.rating.reviews} reviews)</span>
+                      </div>
+                    )}
                      {/* Link to Amazon */}
                      <Link 
                        href={book.amazonLink || '#'} 
@@ -103,7 +125,7 @@ export default function Books() {
                     </svg>
                   </div>
 
-                  <h3 className="text-xl font-bold mb-2 text-blue-600">{book.founderName}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-blue-600">{book.title.split(':')[0]}</h3>
                   
                   <p className="text-gray-600 text-sm mb-4">
                     Founder of {book.title.split('Founder of ')[1]?.split(':')[0] || book.title.split(':')[0] || '...'} 

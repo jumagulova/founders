@@ -16,11 +16,7 @@ export default function About() {
               <div className="prose prose-lg max-w-none">
                 <p className="font-medium text-gray-700 text-xl mb-6">Dear Readers,</p>
                 
-                <p className="mb-6">Kids ask big questions. How did that get made? Who thought of that? Why does it work that way?</p>
-                
                 <p className="mb-6">At Founders for Kids, we answer with real stories about real creators. Not fairy tales—true accounts of people who built something from nothing.</p>
-                
-                <p className="mb-6">Our first three books hit shelves this month. Each one takes you behind the scenes where the magic really happens: the failed prototypes, the midnight breakthroughs, the moments when giving up seemed like the only option (but wasn't).</p>
                 
                 <p className="mb-6">Why focus on founders? Because behind every great creation stands a person with an idea and the courage to pursue it. Our books showcase the extraordinary perseverance, grit, and hard work that bring ideas to life.</p>
                 
