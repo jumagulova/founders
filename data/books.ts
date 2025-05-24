@@ -45,6 +45,78 @@ const books: Book[] = [
       stars: 4.8,
       reviews: 48
     }
+  },
+  {
+    id: 'melanie-perkins',
+    title: 'Melanie Perkins: Founder of Canva',
+    slug: 'melanie-perkins',
+    author: 'Jan J.',
+    description: 'Explore the story of how Melanie Perkins co-founded the design platform Canva.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'reed-hastings',
+    title: 'Reed Hastings: Co-founder of Netflix',
+    slug: 'reed-hastings',
+    author: 'Jan J.',
+    description: 'The story behind the streaming giant Netflix and its co-founder Reed Hastings.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'sara-blakely',
+    title: 'Sara Blakely: Founder of Spanx',
+    slug: 'sara-blakely',
+    author: 'Jan J.',
+    description: 'Learn about Sara Blakely\'s journey creating the shapewear empire Spanx.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'jensen-huang',
+    title: 'Jensen Huang: Co-founder of Nvidia',
+    slug: 'jensen-huang',
+    author: 'Jan J.',
+    description: 'Discover the story of Jensen Huang and the graphics technology giant Nvidia.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'dharmesh-shah',
+    title: 'Dharmesh Shah: Co-founder of HubSpot',
+    slug: 'dharmesh-shah',
+    author: 'Jan J.',
+    description: 'Explore the creation of the marketing and sales platform HubSpot.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'nick-woodman',
+    title: 'Nick Woodman: Founder of GoPro',
+    slug: 'nick-woodman',
+    author: 'Jan J.',
+    description: 'The high-adventure story behind the action camera company GoPro.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'markus-persson',
+    title: 'Markus Persson: Creator of Minecraft',
+    slug: 'markus-persson',
+    author: 'Jan J.',
+    description: 'The story of Notch and the creation of the global phenomenon Minecraft.',
+    coverImage: '',
+    status: 'coming soon'
+  },
+  {
+    id: 'daniel-ek',
+    title: 'Daniel Ek: Co-founder of Spotify',
+    slug: 'daniel-ek',
+    author: 'Jan J.',
+    description: 'Discover how Daniel Ek co-founded the music streaming service Spotify.',
+    coverImage: '',
+    status: 'coming soon'
   }
 ]
 
