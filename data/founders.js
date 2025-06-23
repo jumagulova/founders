@@ -55,7 +55,7 @@ const foundersData = [
     shortBio: "Founder of Spotify",
     company: "Spotify",
     industry: "Music & Technology",
-    image: "/founders/daniel-ek.jpg",
+    image: "/founders/Daniel_Ek.jpeg",
     bio: [
       "Daniel Ek transformed how we listen to music by creating Spotify, a platform that made millions of songs available at our fingertips. Born in 1983 in Stockholm, Sweden, Daniel showed an early passion for both technology and music—two interests that would eventually merge to create his groundbreaking company.",
       "As a child, Daniel taught himself computer programming, building websites for local businesses at just 13 years old. By 16, he was making more money than his parents, and at 18, he led a team of 25 developers. After brief stints at advertising company Tradera (later acquired by eBay) and founding the digital marketing company Advertigo (which he sold to TradeDoubler), Daniel found himself wealthy but unfulfilled at just 23 years old.",
@@ -73,7 +73,7 @@ const foundersData = [
     shortBio: "Founder of NVIDIA",
     company: "NVIDIA",
     industry: "Technology",
-    image: "/founders/jensen-huang.jpg",
+    image: "/founders/Jensen_Huang.jpeg",
     bio: [
       "Jensen Huang transformed modern computing by co-founding NVIDIA, a company that revolutionized computer graphics and later became a driving force in artificial intelligence. Born in 1963 in Taipei, Taiwan, Jensen moved to the United States as a child and developed an early fascination with computers and their potential.",
       "After earning degrees in electrical engineering from Oregon State University and Stanford University, Jensen began his career at Advanced Micro Devices (AMD) and later became a director at LSI Logic. By the mid-1990s, he recognized that computers would soon need dedicated hardware for processing graphics—especially for video games, which were becoming increasingly sophisticated.",
@@ -86,31 +86,12 @@ const foundersData = [
     ]
   },
   {
-    name: "Nick Woodman",
-    slug: "nick-woodman",
-    shortBio: "Founder of GoPro",
-    company: "GoPro",
-    industry: "Consumer Electronics",
-    image: "/founders/Nick_Woodman.jpg",
-    bio: [
-      "Nick Woodman turned his passion for adventure into a revolutionary camera company by creating GoPro, the rugged action cameras that changed how we capture life's most exciting moments. Born in 1975 in California, Nick grew up with a love for surfing and an entrepreneurial spirit that would eventually merge to create something extraordinary.",
-      "After graduating from the University of California, San Diego with a degree in visual arts, Nick launched two startups that unfortunately failed. His first venture, EmpowerAll.com, sold electronic goods online, while his second, FunBug, was a gaming and marketing platform. When FunBug collapsed during the dot-com crash, Nick lost nearly $4 million of investors' money, leaving him discouraged but determined to find success.",
-      "In 2002, Nick embarked on a surfing trip to Australia and Indonesia to clear his mind and rethink his future. During this journey, he encountered a frustrating problem: he wanted to capture photos of himself riding waves, but existing cameras weren't designed for such extreme conditions. They couldn't get close enough to the action, weren't waterproof, and couldn't be operated hands-free.",
-      "Nick's solution was ingenious in its simplicity. He used a broken surfboard leash, a rubber band, and a disposable Kodak camera attached to his wrist to take photos while surfing. This makeshift device was the earliest prototype of what would become the GoPro camera.",
-      "Upon returning home, Nick dedicated himself to developing a wearable, waterproof camera specifically designed for active use. Working from his parents' home and funded by selling shell and bead belts out of his VW van, Nick created the first GoPro product: a 35mm film camera attached to a wrist strap. The name \"GoPro\" reflected his vision of a camera that would help amateur athletes capture professional-quality footage of their adventures.",
-      "The first GoPro cameras hit the market in 2004, selling for around $30 at surf shops and trade shows. The breakthrough came in 2006 when Nick introduced the Digital Hero, GoPro's first digital camera. By 2012, GoPro was selling 2.3 million cameras annually and had become a cultural phenomenon, with users sharing breathtaking first-person footage of everything from skydiving to underwater explorations.",
-      "What made GoPro special wasn't just the durability of the cameras but the unique perspective they offered. By enabling people to capture immersive, first-person footage of their experiences, Nick created not just a camera but a new form of self-expression. The company went public in 2014, and at its peak, was valued at over $10 billion.",
-      "Though GoPro has faced challenges in recent years, including increasing competition and changing market demands, Nick continues to lead the company with the same adventurous spirit that inspired its creation. His journey from a frustrated surfer to the creator of an iconic brand demonstrates how personal passion, combined with problem-solving ingenuity, can revolutionize an entire industry.",
-      "Today, GoPro cameras continue to capture some of life's most extreme and beautiful moments, all because Nick Woodman wanted a better way to share his surfing adventures with friends."
-    ]
-  },
-  {
     name: "Markus Persson",
     slug: "markus-persson",
     shortBio: "Creator of Minecraft",
     company: "Mojang",
     industry: "Gaming",
-    image: "/founders/Markus_Persson.jpg",
+    image: "/founders/Markus_Persson.jpeg",
     bio: [
       "Markus \"Notch\" Persson transformed the gaming world by creating Minecraft, a deceptively simple game of blocks that became a global phenomenon. Born in 1979 in Stockholm, Sweden, Markus discovered computers at an early age, teaching himself programming on his father's Commodore 128 when he was just seven years old.",
       "By age eight, Markus had created his first game, and throughout his teenage years, he continued developing his skills. After completing his schooling, he worked as a game developer for King.com (now known for Candy Crush) and later as a programmer for Jalbum, a photo-sharing service.",
@@ -130,7 +111,7 @@ const foundersData = [
     shortBio: "Founder of Spanx",
     company: "Spanx",
     industry: "Fashion & Retail",
-    image: "/founders/Sara_Blakely.jpg",
+    image: "/founders/Sara_Blakely.jpeg",
     bio: [
       "Sara Blakely transformed the undergarment industry and became the world's youngest self-made female billionaire by creating Spanx, all because she wanted something better to wear under white pants. Born in 1971 in Clearwater, Florida, Sara's path to entrepreneurial success was anything but traditional.",
       "After graduating from Florida State University with a communications degree, Sara initially planned to become a lawyer but performed poorly on the LSAT. Instead, she spent seven years selling fax machines door-to-door, a job that taught her resilience in the face of rejection—she sometimes had doors literally slammed in her face—and honed her sales skills.",
@@ -151,7 +132,7 @@ const foundersData = [
     shortBio: "Co-founder of HubSpot",
     company: "HubSpot",
     industry: "Marketing & Software",
-    image: "/founders/Dharmesh_Shah.jpg",
+    image: "/founders/Dharmesh_Shah.jpeg",
     bio: [
       "Dharmesh Shah revolutionized marketing by co-founding HubSpot, a company that pioneered \"inbound marketing\" and changed how businesses connect with customers online. Born in 1967 in India, Dharmesh moved to the United States as a child and developed an early passion for computer programming.",
       "After earning a bachelor's degree in computer science from the University of Alabama at Birmingham and a master's degree from MIT, Dharmesh founded his first software company, Pyramid Digital Solutions, which created software for financial services firms. He sold the company to SunGard Data Systems in 2005 for over $20 million—an impressive success that might have led many entrepreneurs to retire. Instead, Dharmesh returned to MIT for an MBA, where he would meet his future business partner, Brian Halligan.",
@@ -165,27 +146,23 @@ const foundersData = [
     ]
   },
   {
-    name: "Reed Hastings",
-    slug: "reed-hastings",
-    shortBio: "Co-founder of Netflix",
-    company: "Netflix",
-    industry: "Entertainment & Technology",
-    image: "/founders/Reed_Hastings.jpg",
+    name: "Melanie Perkins",
+    slug: "melanie-perkins",
+    shortBio: "Co-founder of Canva",
+    company: "Canva",
+    industry: "Design & Technology",
+    image: "/founders/Melanie_Perkins.jpeg",
     bio: [
-      "Reed Hastings transformed how the world consumes entertainment by co-founding Netflix, pioneering both DVD-by-mail and streaming video services. Born in 1960 in Boston, Massachusetts, Reed's path to revolutionizing home entertainment began with a $40 late fee for a VHS rental of \"Apollo 13.\"",
-      "After earning a bachelor's degree in mathematics from Bowdoin College, Reed joined the Peace Corps, teaching high school mathematics in Swaziland (now Eswatini) for two years—an experience he credits with developing his leadership skills and global perspective. Upon returning to the United States, he earned a master's degree in computer science from Stanford University and began his career in software development.",
-      "In 1991, Reed founded his first company, Pure Software, which created tools for debugging software. The company grew rapidly, eventually going public before merging with Atria Software and being acquired by Rational Software.",
-      "This experience taught Reed valuable lessons about managing fast-growing companies, though he later admitted feeling overwhelmed by the challenges of leading a large organization.",
-      "The idea for Netflix came in 1997 after Reed was charged a $40 late fee for returning \"Apollo 13\" well past its due date. This frustrating experience sparked a question: What if there was a movie rental service with no late fees?",
-      "Along with co-founder Marc Randolph, Reed launched Netflix as a DVD-by-mail service with a revolutionary subscription model—customers could keep DVDs as long as they wanted with no late fees, receiving new discs when they returned the ones they had.",
-      "Netflix's early years were challenging. The company competed with Blockbuster, which had over 9,000 stores worldwide, compared to Netflix's zero physical locations.",
-      "Reed offered to sell Netflix to Blockbuster for $50 million in 2000, but Blockbuster declined—a decision that would prove monumentally misguided as Netflix grew and Blockbuster eventually filed for bankruptcy in 2010.",
-      "Reed's most visionary move came in 2007 when Netflix introduced streaming video, allowing subscribers to watch content instantly on their computers. At the time, internet speeds were just becoming fast enough to support video streaming, and Reed positioned Netflix at the forefront of this technological shift.",
-      "In 2013, Netflix took another bold step by creating original content, beginning with \"House of Cards\"—a move that transformed the company from a distribution platform into a production studio.",
-      "Throughout Netflix's growth, Reed implemented innovative management practices. He eliminated vacation tracking, believing employees should be treated as responsible adults. He also developed a unique corporate culture centered on \"freedom and responsibility,\" detailed in a famous 125-page culture deck that has been viewed millions of times and influenced companies worldwide.",
-      "Under Reed's leadership, Netflix grew from a small DVD rental service to a global entertainment powerhouse with over 230 million subscribers in more than 190 countries. The company's success fundamentally changed not just how people watch TV and movies but how content is produced and distributed.",
-      "After serving as CEO for 25 years, Reed stepped down in January 2023, transitioning to the role of executive chairman. His legacy includes not just building a successful company but transforming an entire industry—from the extinction of video rental stores to the rise of binge-watching and the streaming wars that now dominate entertainment.",
-      "Reed Hastings' story demonstrates how a simple frustration—a late fee—can inspire an idea that ultimately revolutionizes how millions of people around the world experience entertainment."
+      "Melanie Perkins revolutionized graphic design by co-founding Canva, making professional design accessible to everyone. Born in 1987 in Perth, Australia, Melanie's journey began with a simple observation: graphic design software was too complicated and expensive for most people to use.",
+      "While studying at the University of Western Australia, Melanie worked as a tutor teaching students how to use design software. She noticed that students found programs like Photoshop and InDesign overwhelming and difficult to learn. This frustration sparked an idea: what if design software could be as simple and intuitive as using Facebook?",
+      "In 2007, at just 19 years old, Melanie started her first business, Fusion Books, an online school yearbook design platform. This venture taught her valuable lessons about running a business and confirmed her belief that design tools could be made much more user-friendly.",
+      "The success of Fusion Books gave Melanie the confidence to pursue her bigger vision. In 2012, she co-founded Canva with her partner Cliff Obrecht and technical co-founder Cameron Adams. The company's mission was clear: to democratize design by making it accessible to everyone, not just professionals.",
+      "Canva's approach was revolutionary. Instead of complex software with steep learning curves, they created a web-based platform with drag-and-drop functionality, thousands of templates, and an intuitive interface. Users could create professional-quality designs without any prior design experience.",
+      "The company's growth was remarkable. By 2018, Canva had reached 10 million users. By 2021, that number had grown to over 60 million monthly active users across 190 countries. The platform became especially popular during the COVID-19 pandemic as people and businesses needed to create digital content quickly.",
+      "What sets Melanie apart is her focus on user experience and accessibility. She understood that most people don't want to become professional designers—they just want to create beautiful content for their personal or business needs. Canva's freemium model made it possible for anyone to start designing immediately.",
+      "Under Melanie's leadership as CEO, Canva has expanded beyond basic design tools to include features like video editing, presentations, and collaborative workspaces. The company has also maintained its commitment to education, offering free access to schools and nonprofits.",
+      "In 2021, Canva achieved unicorn status with a valuation of $40 billion, making it one of the most valuable private companies in Australia. Melanie's success has made her one of Australia's youngest female billionaires and a role model for aspiring entrepreneurs.",
+      "Melanie's story demonstrates how identifying a common frustration and solving it with a user-centered approach can lead to extraordinary success. By making design accessible to everyone, she has empowered millions of people to create professional-quality content and express their creativity."
     ]
   }
 ];
