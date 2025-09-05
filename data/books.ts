@@ -7,8 +7,8 @@ const books: Book[] = [
     slug: 'ole-kirk-kristiansen',
     author: 'Jan J.',
     description: 'Learn how Ole Kirk Kristiansen built the beloved LEGO company brick by brick.',
-    coverImage: '/books/lego.png',
-    image: '/books/lego.png',
+    coverImage: '/books/lego.jpg',
+    image: '/books/lego.jpg',
     status: 'available',
     amazonLink: 'https://www.amazon.com/Ole-Kirk-Kristiansen-Biographies-Founders/dp/B0F6S86V8G',
     rating: {
