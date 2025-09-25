@@ -17,43 +17,50 @@ export default function EducatorsPage() {
       <section className="bg-gradient-to-br from-indigo-100 to-white py-14">
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent tracking-tight">
-            For Educators
+            Turn Your Students Into Future Entrepreneurs
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">Classroom‑ready activity packs.</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">Ready-to-use entrepreneurship activities that turn kids into engaged problem-solvers</p>
         </div>
       </section>
+
+      
 
       <section className="py-10">
         <div className="container mx-auto px-6 max-w-4xl">
           <div className="space-y-6 text-gray-700">
+            <p className="text-base font-semibold text-gray-800 mb-4">Here's what you'll get:</p>
+            <div className="space-y-3 mb-6">
+              <div className="flex items-start space-x-3">
+                <span className="text-green-600 font-bold">✓</span>
+                <span>4 complete lesson plans (2 activity packs, 2 lessons each)</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <span className="text-green-600 font-bold">✓</span>
+                <span>Zero prep required - everything's done for you</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <span className="text-green-600 font-bold">✓</span>
+                <span>Group worksheets that guide student thinking</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <span className="text-green-600 font-bold">✓</span>
+                <span>Discussion prompts for deeper learning</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <span className="text-green-600 font-bold">✓</span>
+                <span>Future packs delivered automatically</span>
+              </div>
+            </div>
             <p className="text-base">
-              Get free, classroom-ready lesson plans designed to teach your students essential skills like creativity, collaboration, and resilience. Our downloadable activity packs are inspired by the true stories of the world's most interesting entrepreneurs and come with everything you need to lead a memorable lesson.
-            </p>
-            <p className="text-base">
-              Perfect for your language arts, social studies, or entrepreneurship classes.
+              Perfect for language arts, social studies, or entrepreneurship classes.
             </p>
 
             {/* Inline Opt-in with the intro copy */}
             <div id="educators-optin" className="bg-white rounded-2xl shadow-xl p-6 border border-purple-100">
-              <h2 className="text-lg md:text-xl font-black mb-2 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">Get Your Free Activity Packs</h2>
-              <p className="text-gray-600 mb-4 text-sm">Enter your email to get instant access to all current and future activity packs.</p>
+              <h2 className="text-lg md:text-xl font-black mb-2 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">Get Your 4 Free Lessons</h2>
+              <p className="text-gray-600 mb-4 text-sm">Enter your email for instant access + future activity packs</p>
               <EducatorsOptIn />
-            </div>
-
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">What's Inside Each Pack</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-2">Two No-Prep, 60-Minute Lesson Plans</h3>
-                <p>Each lesson comes with a step-by-step teacher guide and hands-on group challenges.</p>
-              </div>
-              <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-2">Collaborative Group Worksheets</h3>
-                <p>Printable worksheets guide students through each activity, structure their thinking, and get them working together.</p>
-              </div>
-              <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-2">Post-Reading Discussion & Writing Guides</h3>
-                <p>For classes that have read the book, use reflection questions and writing prompts to extend learning.</p>
-              </div>
+              <p className="text-sm text-gray-500 mt-3">100% Free. Instant Download. Unsubscribe Anytime.</p>
             </div>
           </div>
         </div>

@@ -57,7 +57,7 @@ export default function EducatorsOptIn() {
           disabled={isSubmitting}
           className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-semibold hover:from-purple-700 hover:to-pink-600 disabled:opacity-70"
         >
-          {isSubmitting ? 'Sending…' : 'Get Activity Packs'}
+          {isSubmitting ? 'Sending…' : 'SEND ME THE LESSONS PLANS'}
         </button>
       </form>
     </div>
