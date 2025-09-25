@@ -29,26 +29,36 @@ export default function EducatorsPage() {
         <div className="container mx-auto px-6 max-w-4xl">
           <div className="space-y-6 text-gray-700">
             <p className="text-base font-semibold text-gray-800 mb-4">Here's what you'll get:</p>
-            <div className="space-y-3 mb-6">
-              <div className="flex items-start space-x-3">
-                <span className="text-green-600 font-bold">✓</span>
-                <span>4 complete lesson plans (2 activity packs, 2 lessons each)</span>
+            <div className="space-y-2 mb-6">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">✓</span>
+                </div>
+                <span className="text-gray-800">4 complete lesson plans (2 activity packs, 2 lessons each)</span>
               </div>
-              <div className="flex items-start space-x-3">
-                <span className="text-green-600 font-bold">✓</span>
-                <span>Zero prep required - everything's done for you</span>
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">✓</span>
+                </div>
+                <span className="text-gray-800">Zero prep required - everything's done for you</span>
               </div>
-              <div className="flex items-start space-x-3">
-                <span className="text-green-600 font-bold">✓</span>
-                <span>Group worksheets that guide student thinking</span>
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">✓</span>
+                </div>
+                <span className="text-gray-800">Group worksheets that guide student thinking</span>
               </div>
-              <div className="flex items-start space-x-3">
-                <span className="text-green-600 font-bold">✓</span>
-                <span>Discussion prompts for deeper learning</span>
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">✓</span>
+                </div>
+                <span className="text-gray-800">Discussion prompts for deeper learning</span>
               </div>
-              <div className="flex items-start space-x-3">
-                <span className="text-green-600 font-bold">✓</span>
-                <span>Future packs delivered automatically</span>
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">✓</span>
+                </div>
+                <span className="text-gray-800">Future packs delivered automatically</span>
               </div>
             </div>
             <p className="text-base">

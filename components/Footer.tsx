@@ -127,7 +127,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/educators#educators-optin" className="text-gray-600 hover:text-purple-600 transition-colors">
+                <Link href="/educators" className="text-gray-600 hover:text-purple-600 transition-colors">
                   Educator Resources
                 </Link>
               </li>
