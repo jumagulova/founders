@@ -11,10 +11,11 @@ export default function NewsletterSignup() {
     setIsNewsletterSubmitting(true)
     
     const formData = new FormData(e.currentTarget)
+    const name = formData.get('name')
     const email = formData.get('email')
     
-    // Google Form URL with prefilled parameters
-    const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSdxpgY-sMbtlJwoEp71aMG1FRZbPoEHQtnFxgV4DkL-VQQVEw/formResponse?entry.1402057886=${encodeURIComponent(email?.toString() || '')}&submit=Submit`
+    // Google Form URL with prefilled parameters (new form: name=entry.1202531028, email=entry.1402057886)
+    const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSeDWelLxr-6i4cw3XFSFmjzL1GaiQN0ZWe6eXKaw9a3zIlyRw/formResponse?entry.1202531028=${encodeURIComponent(name?.toString() || '')}&entry.1402057886=${encodeURIComponent(email?.toString() || '')}&submit=Submit`
     
     try {
       // Using a hidden iframe to submit the form without redirecting
@@ -49,6 +50,12 @@ export default function NewsletterSignup() {
       {!newsletterSubmitted ? (
         <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
           <div className="flex flex-col sm:flex-row gap-3">
+            <input 
+              type="text" 
+              name="name"
+              placeholder="Your name (optional)" 
+              className="px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
+            />
             <input 
               type="email" 
               name="email"

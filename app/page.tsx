@@ -2,42 +2,17 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, FormEvent } from 'react'
+import { useState } from 'react'
 import booksData from '@/data/books' // Import book data
 
 export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    const formData = new FormData(e.currentTarget)
-    const name = formData.get('name')
-    const email = formData.get('email')
-    
-    // Google Form URL with prefilled parameters
-    const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSfThztQgCSeWqhotHsatvMijjaokG8yo6TRV-0hdGtPvbXjCg/formResponse?entry.1198178546=${encodeURIComponent(name?.toString() || '')}&entry.1500794759=${encodeURIComponent(email?.toString() || '')}&submit=Submit`
-    
-    try {
-      // Using a hidden iframe to submit the form without redirecting
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      document.body.appendChild(iframe)
-      iframe.src = googleFormURL
-      
-      // Show success message after a short delay
-      setTimeout(() => {
-        setFormSubmitted(true)
-        setIsSubmitting(false)
-        document.body.removeChild(iframe)
-      }, 1000)
-    } catch (error) {
-      console.error('Error submitting form:', error)
-      setIsSubmitting(false)
-      // Show success message anyway since we can't reliably detect Google Form submission errors
+  const handleIframeLoad = () => {
+    if (isSubmitting) {
       setFormSubmitted(true)
+      setIsSubmitting(false)
     }
   }
 
@@ -273,13 +248,21 @@ export default function Home() {
             </div>
             
             {!formSubmitted ? (
-              <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
+              <>
+                <iframe name="starter_hidden_iframe" style={{ display: 'none' }} onLoad={handleIframeLoad} />
+                <form
+                  action="https://docs.google.com/forms/d/e/1FAIpQLSerJmFG7orU5-9T9o9uxuWo_VX5LC43b_Q1gCAifhy56g1q5Q/formResponse"
+                  method="POST"
+                  target="starter_hidden_iframe"
+                  onSubmit={() => setIsSubmitting(true)}
+                  className="max-w-xl mx-auto"
+                >
                 <div className="mb-6">
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
                   <input 
                     type="text" 
                     id="name" 
-                    name="name" 
+                    name="entry.1198178546" 
                     required 
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
                     placeholder="Enter your name"
@@ -290,7 +273,7 @@ export default function Home() {
                   <input 
                     type="email" 
                     id="email" 
-                    name="email" 
+                    name="entry.1500794759" 
                     required 
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
                     placeholder="Enter your email"
@@ -308,7 +291,8 @@ export default function Home() {
                 <p className="text-gray-500 text-sm mt-4 text-center">
                   We respect your privacy and will never share your information.
                 </p>
-              </form>
+                </form>
+              </>
             ) : (
               <div className="text-center py-8 max-w-xl mx-auto">
                 <div className="mb-6 text-green-500">
