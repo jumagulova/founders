@@ -10,9 +10,18 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formLoadAt, setFormLoadAt] = useState<number>(0)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [jsToken, setJsToken] = useState<string>("")
 
   useEffect(() => {
     setFormLoadAt(Date.now())
+    const ua = typeof window !== 'undefined' ? window.navigator.userAgent : 'na'
+    const seed = `${ua}-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    let hash = 0
+    for (let i = 0; i < seed.length; i++) {
+      hash = (hash << 5) - hash + seed.charCodeAt(i)
+      hash |= 0
+    }
+    setJsToken(Math.abs(hash).toString(36))
   }, [])
 
   const handleIframeLoad = () => {
@@ -266,7 +275,12 @@ export default function Home() {
                     const elapsedMs = Date.now() - formLoadAt
                     const formData = new FormData(e.currentTarget as HTMLFormElement)
                     const honeypot = formData.get('website')
-                    if ((honeypot && honeypot.toString().trim() !== '') || elapsedMs < 5000) {
+                    const token = formData.get('js_token')
+                    if (
+                      (honeypot && honeypot.toString().trim() !== '') ||
+                      elapsedMs < 5000 ||
+                      !token || token.toString().length < 6
+                    ) {
                       e.preventDefault()
                       setErrorMessage('Please wait a few seconds before submitting and try again.')
                       return
@@ -284,6 +298,8 @@ export default function Home() {
                   className="hidden"
                   aria-hidden="true"
                 />
+                {/* JS token field to ensure JS executed */}
+                <input type="hidden" name="js_token" value={jsToken} readOnly />
                 <div className="mb-6">
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
                   <input 
