@@ -8,19 +8,32 @@ export default function Footer() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
   const [timestamp, setTimestamp] = useState('')
+  const [formLoadAt, setFormLoadAt] = useState<number>(0)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   
   useEffect(() => {
     // Generate a random timestamp to force reload of image
     setTimestamp(Date.now().toString())
+    setFormLoadAt(Date.now())
   }, [])
 
   const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsNewsletterSubmitting(true)
+    setErrorMessage(null)
     
     const formData = new FormData(e.currentTarget)
     const name = formData.get('name')
     const email = formData.get('email')
+    const honeypot = formData.get('website') // should remain empty
+
+    // Basic anti-spam: honeypot must be empty and at least 4s elapsed
+    const elapsedMs = Date.now() - formLoadAt
+    if ((honeypot && honeypot.toString().trim() !== '') || elapsedMs < 4000) {
+      setIsNewsletterSubmitting(false)
+      setErrorMessage('Submission blocked. Please try again in a moment.')
+      return
+    }
     
     // Google Form URL with prefilled parameters (new form: name=entry.1202531028, email=entry.1402057886)
     const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSeDWelLxr-6i4cw3XFSFmjzL1GaiQN0ZWe6eXKaw9a3zIlyRw/formResponse?entry.1202531028=${encodeURIComponent(name?.toString() || '')}&entry.1402057886=${encodeURIComponent(email?.toString() || '')}&submit=Submit`
@@ -162,6 +175,15 @@ export default function Footer() {
             {!newsletterSubmitted ? (
               <div className="w-full md:w-auto">
                 <form onSubmit={handleNewsletterSubmit} className="flex">
+                  {/* Honeypot field: hidden from users, bots may fill */}
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                    aria-hidden="true"
+                  />
                   <input 
                     type="text" 
                     name="name"
@@ -183,6 +205,9 @@ export default function Footer() {
                     {isNewsletterSubmitting ? 'SENDING...' : 'SIGN UP'}
                   </button>
                 </form>
+                {errorMessage && (
+                  <p className="text-xs text-red-500 mt-2">{errorMessage}</p>
+                )}
               </div>
             ) : (
               <div className="w-full md:w-auto bg-green-50 border border-green-100 rounded-lg p-3 flex items-center text-green-600">

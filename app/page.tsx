@@ -2,12 +2,18 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import booksData from '@/data/books' // Import book data
 
 export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formLoadAt, setFormLoadAt] = useState<number>(0)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    setFormLoadAt(Date.now())
+  }, [])
 
   const handleIframeLoad = () => {
     if (isSubmitting) {
@@ -254,9 +260,30 @@ export default function Home() {
                   action="https://docs.google.com/forms/d/e/1FAIpQLSerJmFG7orU5-9T9o9uxuWo_VX5LC43b_Q1gCAifhy56g1q5Q/formResponse"
                   method="POST"
                   target="starter_hidden_iframe"
-                  onSubmit={() => setIsSubmitting(true)}
+                  onSubmit={(e) => {
+                    // Basic anti-spam: honeypot + time threshold
+                    setErrorMessage(null)
+                    const elapsedMs = Date.now() - formLoadAt
+                    const formData = new FormData(e.currentTarget as HTMLFormElement)
+                    const honeypot = formData.get('website')
+                    if ((honeypot && honeypot.toString().trim() !== '') || elapsedMs < 5000) {
+                      e.preventDefault()
+                      setErrorMessage('Please wait a few seconds before submitting and try again.')
+                      return
+                    }
+                    setIsSubmitting(true)
+                  }}
                   className="max-w-xl mx-auto"
                 >
+                {/* Honeypot field */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 <div className="mb-6">
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
                   <input 
@@ -291,6 +318,9 @@ export default function Home() {
                 <p className="text-gray-500 text-sm mt-4 text-center">
                   We respect your privacy and will never share your information.
                 </p>
+                {errorMessage && (
+                  <p className="text-sm text-red-500 mt-2 text-center">{errorMessage}</p>
+                )}
                 </form>
               </>
             ) : (
