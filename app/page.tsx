@@ -12,6 +12,23 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [jsToken, setJsToken] = useState<string>("")
 
+  const isLikelyFakeName = (raw: FormDataEntryValue | null): boolean => {
+    const name = (raw?.toString() || '').trim()
+    if (!name) return true // name is required here
+    if (name.length < 2 || name.length > 60) return true
+    // If single token and very long, likely fake
+    if (!name.includes(' ') && name.length > 10) return true
+    const vowels = /[aeiouyAEIOUY]/
+    if (!vowels.test(name)) return true
+    // disallow long consonant runs
+    if (/[bcdfghjklmnpqrstvwxz]{5,}/i.test(name)) return true
+    // disallow 3+ repeated same characters
+    if (/(.)\1{2,}/.test(name)) return true
+    // basic allowed charset
+    if (!/^[a-zA-Z .'-]+$/.test(name)) return true
+    return false
+  }
+
   useEffect(() => {
     setFormLoadAt(Date.now())
     const ua = typeof window !== 'undefined' ? window.navigator.userAgent : 'na'
@@ -276,10 +293,12 @@ export default function Home() {
                     const formData = new FormData(e.currentTarget as HTMLFormElement)
                     const honeypot = formData.get('website')
                     const token = formData.get('js_token')
+                    const name = formData.get('entry.1198178546')
                     if (
                       (honeypot && honeypot.toString().trim() !== '') ||
                       elapsedMs < 5000 ||
-                      !token || token.toString().length < 6
+                      !token || token.toString().length < 6 ||
+                      isLikelyFakeName(name)
                     ) {
                       e.preventDefault()
                       setErrorMessage('Please wait a few seconds before submitting and try again.')
