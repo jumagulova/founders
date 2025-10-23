@@ -8,42 +8,12 @@ export default function Footer() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
   const [timestamp, setTimestamp] = useState('')
-  const [formLoadAt, setFormLoadAt] = useState<number>(0)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [jsToken, setJsToken] = useState<string>("")
   
   useEffect(() => {
     // Generate a random timestamp to force reload of image
     setTimestamp(Date.now().toString())
-    setFormLoadAt(Date.now())
-    // Lightweight JS token bots won't set if not executing JS
-    const ua = typeof window !== 'undefined' ? window.navigator.userAgent : 'na'
-    const seed = `${ua}-${Date.now()}-${Math.random().toString(36).slice(2)}`
-    // simple hash
-    let hash = 0
-    for (let i = 0; i < seed.length; i++) {
-      hash = (hash << 5) - hash + seed.charCodeAt(i)
-      hash |= 0
-    }
-    setJsToken(Math.abs(hash).toString(36))
   }, [])
-
-  const isLikelyFakeName = (raw: FormDataEntryValue | null): boolean => {
-    const name = (raw?.toString() || '').trim()
-    if (!name) return false // allow empty optional name
-    if (name.length < 2 || name.length > 60) return true
-    // require at least two words or a space to reduce single random strings
-    if (!name.includes(' ')) return true
-    const vowels = /[aeiouyAEIOUY]/
-    if (!vowels.test(name)) return true
-    // disallow long consonant runs
-    if (/[bcdfghjklmnpqrstvwxz]{5,}/i.test(name)) return true
-    // disallow 3+ repeated same characters
-    if (/(.)\1{2,}/.test(name)) return true
-    // basic allowed charset
-    if (!/^[a-zA-Z .'-]+$/.test(name)) return true
-    return false
-  }
 
   const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -53,43 +23,32 @@ export default function Footer() {
     const formData = new FormData(e.currentTarget)
     const name = formData.get('name')
     const email = formData.get('email')
-    const honeypot = formData.get('website') // should remain empty
-    const token = formData.get('js_token')
-
-    // Basic anti-spam: honeypot must be empty and at least 4s elapsed
-    const elapsedMs = Date.now() - formLoadAt
-    if (
-      (honeypot && honeypot.toString().trim() !== '') ||
-      elapsedMs < 4000 ||
-      !token || token.toString().length < 6 ||
-      isLikelyFakeName(name)
-    ) {
-      setIsNewsletterSubmitting(false)
-      setErrorMessage('Submission blocked. Please try again in a moment.')
-      return
-    }
-    
-    // Google Form URL with prefilled parameters (new form: name=entry.1202531028, email=entry.1402057886)
-    const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSeDWelLxr-6i4cw3XFSFmjzL1GaiQN0ZWe6eXKaw9a3zIlyRw/formResponse?entry.1202531028=${encodeURIComponent(name?.toString() || '')}&entry.1402057886=${encodeURIComponent(email?.toString() || '')}&submit=Submit`
     
     try {
-      // Using a hidden iframe to submit the form without redirecting
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      document.body.appendChild(iframe)
-      iframe.src = googleFormURL
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name?.toString() || '',
+          email: email?.toString() || '',
+          formType: 'newsletter'
+        }),
+      })
       
-      // Show success message after a short delay
-      setTimeout(() => {
+      if (response.ok) {
         setNewsletterSubmitted(true)
         setIsNewsletterSubmitting(false)
-        document.body.removeChild(iframe)
-      }, 1000)
+      } else {
+        const errorData = await response.json()
+        setErrorMessage(errorData.error || 'Submission failed. Please try again.')
+        setIsNewsletterSubmitting(false)
+      }
     } catch (error) {
       console.error('Error submitting form:', error)
+      setErrorMessage('Network error. Please try again.')
       setIsNewsletterSubmitting(false)
-      // Show success message anyway since we can't reliably detect Google Form submission errors
-      setNewsletterSubmitted(true)
     }
   }
 
@@ -209,22 +168,6 @@ export default function Footer() {
             {!newsletterSubmitted ? (
               <div className="w-full md:w-auto">
                 <form onSubmit={handleNewsletterSubmit} className="flex">
-                  {/* Honeypot field: hidden from users, bots may fill */}
-                  <input
-                    type="text"
-                    name="website"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    className="hidden"
-                    aria-hidden="true"
-                  />
-                  {/* JS token field to ensure JS executed */}
-                  <input
-                    type="hidden"
-                    name="js_token"
-                    value={jsToken}
-                    readOnly
-                  />
                   <input 
                     type="text" 
                     name="name"

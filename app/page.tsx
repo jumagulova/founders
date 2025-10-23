@@ -2,51 +2,13 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import booksData from '@/data/books' // Import book data
 
 export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formLoadAt, setFormLoadAt] = useState<number>(0)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [jsToken, setJsToken] = useState<string>("")
-
-  const isLikelyFakeName = (raw: FormDataEntryValue | null): boolean => {
-    const name = (raw?.toString() || '').trim()
-    if (!name) return true // name is required here
-    if (name.length < 2 || name.length > 60) return true
-    // If single token and very long, likely fake
-    if (!name.includes(' ') && name.length > 10) return true
-    const vowels = /[aeiouyAEIOUY]/
-    if (!vowels.test(name)) return true
-    // disallow long consonant runs
-    if (/[bcdfghjklmnpqrstvwxz]{5,}/i.test(name)) return true
-    // disallow 3+ repeated same characters
-    if (/(.)\1{2,}/.test(name)) return true
-    // basic allowed charset
-    if (!/^[a-zA-Z .'-]+$/.test(name)) return true
-    return false
-  }
-
-  useEffect(() => {
-    setFormLoadAt(Date.now())
-    const ua = typeof window !== 'undefined' ? window.navigator.userAgent : 'na'
-    const seed = `${ua}-${Date.now()}-${Math.random().toString(36).slice(2)}`
-    let hash = 0
-    for (let i = 0; i < seed.length; i++) {
-      hash = (hash << 5) - hash + seed.charCodeAt(i)
-      hash |= 0
-    }
-    setJsToken(Math.abs(hash).toString(36))
-  }, [])
-
-  const handleIframeLoad = () => {
-    if (isSubmitting) {
-      setFormSubmitted(true)
-      setIsSubmitting(false)
-    }
-  }
 
   // Filter for available books to feature
   const featuredBooks = booksData.filter(book => book.status === 'available').slice(0, 3); // Show top 3 available
@@ -281,44 +243,45 @@ export default function Home() {
             
             {!formSubmitted ? (
               <>
-                <iframe name="starter_hidden_iframe" style={{ display: 'none' }} onLoad={handleIframeLoad} />
                 <form
-                  action="https://docs.google.com/forms/d/e/1FAIpQLSerJmFG7orU5-9T9o9uxuWo_VX5LC43b_Q1gCAifhy56g1q5Q/formResponse"
-                  method="POST"
-                  target="starter_hidden_iframe"
-                  onSubmit={(e) => {
-                    // Basic anti-spam: honeypot + time threshold
+                  onSubmit={async (e) => {
+                    e.preventDefault()
                     setErrorMessage(null)
-                    const elapsedMs = Date.now() - formLoadAt
-                    const formData = new FormData(e.currentTarget as HTMLFormElement)
-                    const honeypot = formData.get('website')
-                    const token = formData.get('js_token')
-                    const name = formData.get('entry.1198178546')
-                    if (
-                      (honeypot && honeypot.toString().trim() !== '') ||
-                      elapsedMs < 5000 ||
-                      !token || token.toString().length < 6 ||
-                      isLikelyFakeName(name)
-                    ) {
-                      e.preventDefault()
-                      setErrorMessage('Please wait a few seconds before submitting and try again.')
-                      return
-                    }
                     setIsSubmitting(true)
+                    
+                    const formData = new FormData(e.currentTarget as HTMLFormElement)
+                    const name = formData.get('entry.1198178546')
+                    const email = formData.get('entry.1500794759')
+                    
+                    try {
+                      const response = await fetch('/api/submit-form', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          name: name?.toString() || '',
+                          email: email?.toString() || '',
+                          formType: 'starter'
+                        }),
+                      })
+                      
+                      if (response.ok) {
+                        setFormSubmitted(true)
+                        setIsSubmitting(false)
+                      } else {
+                        const errorData = await response.json()
+                        setErrorMessage(errorData.error || 'Submission failed. Please try again.')
+                        setIsSubmitting(false)
+                      }
+                    } catch (error) {
+                      console.error('Error submitting form:', error)
+                      setErrorMessage('Network error. Please try again.')
+                      setIsSubmitting(false)
+                    }
                   }}
                   className="max-w-xl mx-auto"
                 >
-                {/* Honeypot field */}
-                <input
-                  type="text"
-                  name="website"
-                  tabIndex={-1}
-                  autoComplete="off"
-                  className="hidden"
-                  aria-hidden="true"
-                />
-                {/* JS token field to ensure JS executed */}
-                <input type="hidden" name="js_token" value={jsToken} readOnly />
                 <div className="mb-6">
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
                   <input 
