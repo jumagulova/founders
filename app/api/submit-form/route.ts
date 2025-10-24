@@ -6,11 +6,11 @@ const submissions = new Map<string, { count: number; lastSubmission: number }>()
 // Clean up old entries every hour
 setInterval(() => {
   const now = Date.now()
-  for (const [key, value] of submissions.entries()) {
+  submissions.forEach((value, key) => {
     if (now - value.lastSubmission > 3600000) { // 1 hour
       submissions.delete(key)
     }
-  }
+  })
 }, 3600000)
 
 function getClientIP(request: NextRequest): string {
