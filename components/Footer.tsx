@@ -3,53 +3,74 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, FormEvent, useEffect } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 export default function Footer() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
   const [timestamp, setTimestamp] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [footerCaptchaToken, setFooterCaptchaToken] = useState<string | null>(null)
+  const [footerCaptchaError, setFooterCaptchaError] = useState<string | null>(null)
+  const [grecaptchaReady, setGrecaptchaReady] = useState(false)
+  const [captchaError, setCaptchaError] = useState<string | null>(null)
+  const RECAPTCHA_SITE_KEY = '6Ldg6fsrAAAAANA20hPNKOyJIB2s8d7yIItkrBqi'
   
   useEffect(() => {
     // Generate a random timestamp to force reload of image
     setTimestamp(Date.now().toString())
   }, [])
 
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
+    script.async = true
+    script.onload = () => setGrecaptchaReady(true)
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
+
   const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsNewsletterSubmitting(true)
-    setErrorMessage(null)
-    
-    const formData = new FormData(e.currentTarget)
-    const name = formData.get('name')
-    const email = formData.get('email')
-    
-    try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name?.toString() || '',
-          email: email?.toString() || '',
-          formType: 'newsletter'
-        }),
-      })
-      
-      if (response.ok) {
-        setNewsletterSubmitted(true)
-        setIsNewsletterSubmitting(false)
-      } else {
-        const errorData = await response.json()
-        setErrorMessage(errorData.error || 'Submission failed. Please try again.')
-        setIsNewsletterSubmitting(false)
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error)
-      setErrorMessage('Network error. Please try again.')
+    setCaptchaError(null)
+    if (!(window as any).grecaptcha || !grecaptchaReady) {
+      setCaptchaError('reCAPTCHA not loaded. Try again in a few seconds.')
       setIsNewsletterSubmitting(false)
+      return
     }
+    (window as any).grecaptcha.ready(() => {
+      (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_newsletter' }).then(async (captchaToken: string) => {
+        const formData = new FormData(e.currentTarget)
+        const name = formData.get('name')
+        const email = formData.get('email')
+        try {
+          const response = await fetch('/api/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: name?.toString() || '',
+              email: email?.toString() || '',
+              formType: 'newsletter',
+              captcha: captchaToken
+            })
+          })
+          if (response.ok) {
+            setNewsletterSubmitted(true)
+            setIsNewsletterSubmitting(false)
+          } else {
+            const errorData = await response.json()
+            setCaptchaError(errorData.error || 'Submission failed. Please try again.')
+            setIsNewsletterSubmitting(false)
+          }
+        } catch (error) {
+          setCaptchaError('Network error. Please try again.')
+          setIsNewsletterSubmitting(false)
+        }
+      })
+    })
   }
 
   const currentYear = new Date().getFullYear();
@@ -167,7 +188,8 @@ export default function Footer() {
             
             {!newsletterSubmitted ? (
               <div className="w-full md:w-auto">
-                <form onSubmit={handleNewsletterSubmit} className="flex">
+                <form onSubmit={handleNewsletterSubmit} className="flex flex-col items-center">
+                  <div className="flex">
                   <input 
                     type="text" 
                     name="name"
@@ -188,10 +210,14 @@ export default function Footer() {
                   >
                     {isNewsletterSubmitting ? 'SENDING...' : 'SIGN UP'}
                   </button>
+                  </div>
+                  <div className="mt-3 flex flex-col items-center">
+                    {captchaError && <p className="text-xs text-red-500 mt-2">{captchaError}</p>}
+                  </div>
+                  {errorMessage && (
+                    <p className="text-xs text-red-500 mt-2">{errorMessage}</p>
+                  )}
                 </form>
-                {errorMessage && (
-                  <p className="text-xs text-red-500 mt-2">{errorMessage}</p>
-                )}
               </div>
             ) : (
               <div className="w-full md:w-auto bg-green-50 border border-green-100 rounded-lg p-3 flex items-center text-green-600">

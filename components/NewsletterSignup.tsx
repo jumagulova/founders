@@ -1,41 +1,66 @@
 "use client"
 
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 
 export default function NewsletterSignup() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
+  const [grecaptchaReady, setGrecaptchaReady] = useState(false)
+  const [captchaError, setCaptchaError] = useState<string | null>(null)
+
+  const RECAPTCHA_SITE_KEY = '6Ldg6fsrAAAAANA20hPNKOyJIB2s8d7yIItkrBqi'
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
+    script.async = true
+    script.onload = () => setGrecaptchaReady(true)
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsNewsletterSubmitting(true)
-    
-    const formData = new FormData(e.currentTarget)
-    const name = formData.get('name')
-    const email = formData.get('email')
-    
-    // Google Form URL with prefilled parameters (new form: name=entry.1202531028, email=entry.1402057886)
-    const googleFormURL = `https://docs.google.com/forms/d/e/1FAIpQLSeDWelLxr-6i4cw3XFSFmjzL1GaiQN0ZWe6eXKaw9a3zIlyRw/formResponse?entry.1202531028=${encodeURIComponent(name?.toString() || '')}&entry.1402057886=${encodeURIComponent(email?.toString() || '')}&submit=Submit`
-    
-    try {
-      // Using a hidden iframe to submit the form without redirecting
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      document.body.appendChild(iframe)
-      iframe.src = googleFormURL
-      
-      // Show success message after a short delay
-      setTimeout(() => {
-        setNewsletterSubmitted(true)
-        setIsNewsletterSubmitting(false)
-        document.body.removeChild(iframe)
-      }, 1000)
-    } catch (error) {
-      console.error('Error submitting form:', error)
+    setCaptchaError(null)
+    if (!(window as any).grecaptcha || !grecaptchaReady) {
+      setCaptchaError('reCAPTCHA not loaded. Try again in a few seconds.')
       setIsNewsletterSubmitting(false)
-      // Show success message anyway since we can't reliably detect Google Form submission errors
-      setNewsletterSubmitted(true)
+      return
     }
+    (window as any).grecaptcha.ready(() => {
+      (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_newsletter' }).then(async (captchaToken: string) => {
+        const formData = new FormData(e.currentTarget)
+        const name = formData.get('name')
+        const email = formData.get('email')
+        // (Update API to expect 'captcha' in body)
+        try {
+          const response = await fetch('/api/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: name?.toString() || '',
+              email: email?.toString() || '',
+              formType: 'newsletter',
+              captcha: captchaToken
+            })
+          })
+          if (response.ok) {
+            setNewsletterSubmitted(true)
+            setIsNewsletterSubmitting(false)
+          } else {
+            const errorData = await response.json()
+            setCaptchaError(errorData.error || 'Submission failed. Please try again.')
+            setIsNewsletterSubmitting(false)
+          }
+        } catch (error) {
+          setCaptchaError('Network error. Please try again.')
+          setIsNewsletterSubmitting(false)
+        }
+      })
+    })
   }
 
   return (
@@ -65,12 +90,15 @@ export default function NewsletterSignup() {
             />
             <button 
               type="submit"
-              disabled={isNewsletterSubmitting}
+              disabled={isNewsletterSubmitting || !grecaptchaReady}
               className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-6 py-2 rounded-full text-sm font-medium transition-colors"
             >
               {isNewsletterSubmitting ? 'SENDING...' : 'SIGN UP'}
             </button>
           </div>
+          {captchaError && (
+            <p className="text-xs text-red-500 mt-2">{captchaError}</p>
+          )}
         </form>
       ) : (
         <div className="text-center py-4 max-w-md mx-auto">

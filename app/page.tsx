@@ -2,13 +2,29 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import booksData from '@/data/books' // Import book data
+import ReCAPTCHA from 'react-google-recaptcha'
 
 export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [starterCaptchaToken, setStarterCaptchaToken] = useState<string | null>(null)
+  const [starterCaptchaError, setStarterCaptchaError] = useState<string | null>(null)
+  const [grecaptchaReady, setGrecaptchaReady] = useState(false)
+  const RECAPTCHA_SITE_KEY = '6Ldg6fsrAAAAANA20hPNKOyJIB2s8d7yIItkrBqi'
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
+    script.async = true
+    script.onload = () => setGrecaptchaReady(true)
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   // Filter for available books to feature
   const featuredBooks = booksData.filter(book => book.status === 'available').slice(0, 3); // Show top 3 available
@@ -247,38 +263,43 @@ export default function Home() {
                   onSubmit={async (e) => {
                     e.preventDefault()
                     setErrorMessage(null)
+                    setStarterCaptchaError(null)
                     setIsSubmitting(true)
-                    
-                    const formData = new FormData(e.currentTarget as HTMLFormElement)
-                    const name = formData.get('entry.1198178546')
-                    const email = formData.get('entry.1500794759')
-                    
-                    try {
-                      const response = await fetch('/api/submit-form', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                          name: name?.toString() || '',
-                          email: email?.toString() || '',
-                          formType: 'starter'
-                        }),
-                      })
-                      
-                      if (response.ok) {
-                        setFormSubmitted(true)
-                        setIsSubmitting(false)
-                      } else {
-                        const errorData = await response.json()
-                        setErrorMessage(errorData.error || 'Submission failed. Please try again.')
-                        setIsSubmitting(false)
-                      }
-                    } catch (error) {
-                      console.error('Error submitting form:', error)
-                      setErrorMessage('Network error. Please try again.')
+                    if (!(window as any).grecaptcha || !grecaptchaReady) {
+                      setStarterCaptchaError('reCAPTCHA not loaded. Try again in a few seconds.')
                       setIsSubmitting(false)
+                      return
                     }
+                    (window as any).grecaptcha.ready(() => {
+                      (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_starter' }).then(async (captchaToken: string) => {
+                        const formData = new FormData(e.currentTarget as HTMLFormElement)
+                        const name = formData.get('entry.1198178546')
+                        const email = formData.get('entry.1500794759')
+                        try {
+                          const response = await fetch('/api/submit-form', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              name: name?.toString() || '',
+                              email: email?.toString() || '',
+                              formType: 'starter',
+                              captcha: captchaToken
+                            }),
+                          })
+                          if (response.ok) {
+                            setFormSubmitted(true)
+                            setIsSubmitting(false)
+                          } else {
+                            const errorData = await response.json()
+                            setErrorMessage(errorData.error || 'Submission failed. Please try again.')
+                            setIsSubmitting(false)
+                          }
+                        } catch (error) {
+                          setErrorMessage('Network error. Please try again.')
+                          setIsSubmitting(false)
+                        }
+                      })
+                    })
                   }}
                   className="max-w-xl mx-auto"
                 >
@@ -303,6 +324,16 @@ export default function Home() {
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
                     placeholder="Enter your email"
                   />
+                </div>
+                <div className="mb-4 flex flex-col items-center">
+                  <ReCAPTCHA
+                    sitekey={RECAPTCHA_SITE_KEY}
+                    onChange={setStarterCaptchaToken}
+                    onExpired={() => setStarterCaptchaToken(null)}
+                  />
+                  {starterCaptchaError && (
+                    <p className="text-xs text-red-500 mt-2">{starterCaptchaError}</p>
+                  )}
                 </div>
                 <div className="text-center">
                   <button 
