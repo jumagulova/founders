@@ -1,18 +1,16 @@
 "use client"
 
 import { useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha';
+
+const RECAPTCHA_SITE_KEY = '6LfUD_wrAAAAAC7pxceK44HurQ663eiVS9G-UogW'
 
 export default function EducatorsOptIn() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-
-  // Hidden iframe onLoad confirms submission without redirecting the page
-  const handleIframeLoad = () => {
-    if (isSubmitting) {
-      setSubmitted(true)
-      setIsSubmitting(false)
-    }
-  }
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [captchaError, setCaptchaError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   if (submitted) {
     return (
@@ -28,15 +26,43 @@ export default function EducatorsOptIn() {
 
   return (
     <div>
-      {/* Hidden iframe target to avoid redirect */}
-      <iframe name="educators_hidden_iframe" style={{ display: 'none' }} onLoad={handleIframeLoad} />
-
-      {/* Post directly to Google Forms with correct entry IDs */}
       <form
-        action="https://docs.google.com/forms/d/e/1FAIpQLSdEC0j2zA1IlaWMjQYVobC7JbclGjrfahDn9AtezFeFVtDnXQ/formResponse"
-        method="POST"
-        target="educators_hidden_iframe"
-        onSubmit={() => setIsSubmitting(true)}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setIsSubmitting(true);
+          setCaptchaError(null);
+          setError(null);
+          if (!captchaToken) {
+            setCaptchaError('Please verify you are not a robot.');
+            setIsSubmitting(false);
+            return;
+          }
+          const formData = new FormData(e.currentTarget);
+          const name = formData.get('entry.965620759') as string;
+          const email = formData.get('entry.751953085') as string;
+          try {
+            const response = await fetch('/api/submit-educator-form', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: name || '',
+                email: email || '',
+                captcha: captchaToken
+              }),
+            });
+            if (response.ok) {
+              setSubmitted(true);
+              setIsSubmitting(false);
+            } else {
+              const errorData = await response.json();
+              setError(errorData.error || 'Submission failed. Please try again.');
+              setIsSubmitting(false);
+            }
+          } catch (error) {
+            setError('Network error. Please try again.');
+            setIsSubmitting(false);
+          }
+        }}
         className="flex flex-col sm:flex-row gap-3"
       >
         <input
@@ -59,9 +85,18 @@ export default function EducatorsOptIn() {
         >
           {isSubmitting ? 'Sending…' : 'SEND ME THE LESSONS PLANS'}
         </button>
+        <div className="mt-3 flex flex-col items-center w-full">
+          <ReCAPTCHA
+            sitekey={RECAPTCHA_SITE_KEY}
+            onChange={setCaptchaToken}
+            onExpired={() => setCaptchaToken(null)}
+          />
+          {captchaError && <p className="text-xs text-red-500 mt-2">{captchaError}</p>}
+        </div>
+        {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
       </form>
     </div>
-  )
+  );
 }
 
 
