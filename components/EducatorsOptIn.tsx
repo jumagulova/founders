@@ -63,29 +63,31 @@ export default function EducatorsOptIn() {
             setIsSubmitting(false);
           }
         }}
-        className="flex flex-col sm:flex-row gap-3"
+        className="flex flex-col gap-4"
       >
-        <input
-          type="text"
-          name="entry.965620759"
-          placeholder="Your name (optional)"
-          className="px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm"
-        />
-        <input
-          type="email"
-          name="entry.751953085"
-          required
-          placeholder="Your email"
-          className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm"
-        />
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-semibold hover:from-purple-700 hover:to-pink-600 disabled:opacity-70"
-        >
-          {isSubmitting ? 'Sending…' : 'SEND ME THE LESSONS PLANS'}
-        </button>
-        <div className="mt-3 flex flex-col items-center w-full">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="text"
+            name="entry.965620759"
+            placeholder="Your name (optional)"
+            className="px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm"
+          />
+          <input
+            type="email"
+            name="entry.751953085"
+            required
+            placeholder="Your email"
+            className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-300 text-sm"
+          />
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-semibold hover:from-purple-700 hover:to-pink-600 disabled:opacity-70"
+          >
+            {isSubmitting ? 'Sending…' : 'SEND ME THE LESSONS PLANS'}
+          </button>
+        </div>
+        <div className="flex flex-col items-center w-full mt-3">
           <ReCAPTCHA
             sitekey={RECAPTCHA_SITE_KEY}
             onChange={setCaptchaToken}
@@ -93,7 +95,7 @@ export default function EducatorsOptIn() {
           />
           {captchaError && <p className="text-xs text-red-500 mt-2">{captchaError}</p>}
         </div>
-        {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-xs text-red-500 mt-2 text-center">{error}</p>}
       </form>
     </div>
   );
