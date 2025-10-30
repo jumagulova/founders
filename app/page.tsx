@@ -10,16 +10,18 @@ export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [starterCaptchaToken, setStarterCaptchaToken] = useState<string | null>(null)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [starterCaptchaError, setStarterCaptchaError] = useState<string | null>(null)
-  const [grecaptchaReady, setGrecaptchaReady] = useState(false)
-  const RECAPTCHA_SITE_KEY = '6Ldg6fsrAAAAANA20hPNKOyJIB2s8d7yIItkrBqi'
+  const RECAPTCHA_SITE_KEY = '6LfUD_wrAAAAAC7pxceK44HurQ663eiVS9G-UogW'
 
   useEffect(() => {
     const script = document.createElement('script')
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
     script.async = true
-    script.onload = () => setGrecaptchaReady(true)
+    script.onload = () => {
+      // grecaptchaReady is no longer needed for v2, but keeping it for now
+      // setGrecaptchaReady(true) 
+    }
     document.body.appendChild(script)
     return () => {
       document.body.removeChild(script)
@@ -265,41 +267,37 @@ export default function Home() {
                     setErrorMessage(null)
                     setStarterCaptchaError(null)
                     setIsSubmitting(true)
-                    if (!(window as any).grecaptcha || !grecaptchaReady) {
-                      setStarterCaptchaError('reCAPTCHA not loaded. Try again in a few seconds.')
+                    if (!captchaToken) {
+                      setStarterCaptchaError('Please verify you are not a robot.')
                       setIsSubmitting(false)
                       return
                     }
-                    (window as any).grecaptcha.ready(() => {
-                      (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_starter' }).then(async (captchaToken: string) => {
-                        const formData = new FormData(e.currentTarget as HTMLFormElement)
-                        const name = formData.get('entry.1198178546')
-                        const email = formData.get('entry.1500794759')
-                        try {
-                          const response = await fetch('/api/submit-form', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              name: name?.toString() || '',
-                              email: email?.toString() || '',
-                              formType: 'starter',
-                              captcha: captchaToken
-                            }),
-                          })
-                          if (response.ok) {
-                            setFormSubmitted(true)
-                            setIsSubmitting(false)
-                          } else {
-                            const errorData = await response.json()
-                            setErrorMessage(errorData.error || 'Submission failed. Please try again.')
-                            setIsSubmitting(false)
-                          }
-                        } catch (error) {
-                          setErrorMessage('Network error. Please try again.')
-                          setIsSubmitting(false)
-                        }
+                    const formData = new FormData(e.currentTarget as HTMLFormElement)
+                    const name = formData.get('entry.1198178546')
+                    const email = formData.get('entry.1500794759')
+                    try {
+                      const response = await fetch('/api/submit-form', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          name: name?.toString() || '',
+                          email: email?.toString() || '',
+                          formType: 'starter',
+                          captcha: captchaToken
+                        }),
                       })
-                    })
+                      if (response.ok) {
+                        setFormSubmitted(true)
+                        setIsSubmitting(false)
+                      } else {
+                        const errorData = await response.json()
+                        setErrorMessage(errorData.error || 'Submission failed. Please try again.')
+                        setIsSubmitting(false)
+                      }
+                    } catch (error) {
+                      setErrorMessage('Network error. Please try again.')
+                      setIsSubmitting(false)
+                    }
                   }}
                   className="max-w-xl mx-auto"
                 >
@@ -328,8 +326,8 @@ export default function Home() {
                 <div className="mb-4 flex flex-col items-center">
                   <ReCAPTCHA
                     sitekey={RECAPTCHA_SITE_KEY}
-                    onChange={setStarterCaptchaToken}
-                    onExpired={() => setStarterCaptchaToken(null)}
+                    onChange={setCaptchaToken}
+                    onExpired={() => setCaptchaToken(null)}
                   />
                   {starterCaptchaError && (
                     <p className="text-xs text-red-500 mt-2">{starterCaptchaError}</p>

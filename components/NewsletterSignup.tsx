@@ -1,20 +1,23 @@
 "use client"
 
 import { useState, FormEvent, useEffect } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha';
+
+const RECAPTCHA_SITE_KEY = '6LfUD_wrAAAAAC7pxceK44HurQ663eiVS9G-UogW'
 
 export default function NewsletterSignup() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
   const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
-  const [grecaptchaReady, setGrecaptchaReady] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const [captchaError, setCaptchaError] = useState<string | null>(null)
-
-  const RECAPTCHA_SITE_KEY = '6Ldg6fsrAAAAANA20hPNKOyJIB2s8d7yIItkrBqi'
 
   useEffect(() => {
     const script = document.createElement('script')
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
     script.async = true
-    script.onload = () => setGrecaptchaReady(true)
+    script.onload = () => {
+      // setGrecaptchaReady(true) // This line is removed
+    }
     document.body.appendChild(script)
     return () => {
       document.body.removeChild(script)
@@ -25,42 +28,37 @@ export default function NewsletterSignup() {
     e.preventDefault()
     setIsNewsletterSubmitting(true)
     setCaptchaError(null)
-    if (!(window as any).grecaptcha || !grecaptchaReady) {
-      setCaptchaError('reCAPTCHA not loaded. Try again in a few seconds.')
+    if (!captchaToken) {
+      setCaptchaError('Please verify you are not a robot.')
       setIsNewsletterSubmitting(false)
       return
     }
-    (window as any).grecaptcha.ready(() => {
-      (window as any).grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_newsletter' }).then(async (captchaToken: string) => {
-        const formData = new FormData(e.currentTarget)
-        const name = formData.get('name')
-        const email = formData.get('email')
-        // (Update API to expect 'captcha' in body)
-        try {
-          const response = await fetch('/api/submit-form', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: name?.toString() || '',
-              email: email?.toString() || '',
-              formType: 'newsletter',
-              captcha: captchaToken
-            })
-          })
-          if (response.ok) {
-            setNewsletterSubmitted(true)
-            setIsNewsletterSubmitting(false)
-          } else {
-            const errorData = await response.json()
-            setCaptchaError(errorData.error || 'Submission failed. Please try again.')
-            setIsNewsletterSubmitting(false)
-          }
-        } catch (error) {
-          setCaptchaError('Network error. Please try again.')
-          setIsNewsletterSubmitting(false)
-        }
+    const formData = new FormData(e.currentTarget)
+    const name = formData.get('name')
+    const email = formData.get('email')
+    try {
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name?.toString() || '',
+          email: email?.toString() || '',
+          formType: 'newsletter',
+          captcha: captchaToken
+        })
       })
-    })
+      if (response.ok) {
+        setNewsletterSubmitted(true)
+        setIsNewsletterSubmitting(false)
+      } else {
+        const errorData = await response.json()
+        setCaptchaError(errorData.error || 'Submission failed. Please try again.')
+        setIsNewsletterSubmitting(false)
+      }
+    } catch (error) {
+      setCaptchaError('Network error. Please try again.')
+      setIsNewsletterSubmitting(false)
+    }
   }
 
   return (
@@ -90,15 +88,20 @@ export default function NewsletterSignup() {
             />
             <button 
               type="submit"
-              disabled={isNewsletterSubmitting || !grecaptchaReady}
+              disabled={isNewsletterSubmitting || !captchaToken}
               className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-6 py-2 rounded-full text-sm font-medium transition-colors"
             >
               {isNewsletterSubmitting ? 'SENDING...' : 'SIGN UP'}
             </button>
           </div>
-          {captchaError && (
-            <p className="text-xs text-red-500 mt-2">{captchaError}</p>
-          )}
+          <div className="mt-4 flex flex-col items-center">
+            <ReCAPTCHA
+              sitekey={RECAPTCHA_SITE_KEY}
+              onChange={setCaptchaToken}
+              onExpired={() => setCaptchaToken(null)}
+            />
+            {captchaError && (<p className="text-xs text-red-500 mt-2">{captchaError}</p>)}
+          </div>
         </form>
       ) : (
         <div className="text-center py-4 max-w-md mx-auto">

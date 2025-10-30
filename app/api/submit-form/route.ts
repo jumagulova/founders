@@ -77,21 +77,16 @@ export async function POST(request: NextRequest) {
     if (!captcha) {
       return NextResponse.json({ error: 'Missing reCAPTCHA token' }, { status: 400 })
     }
-    // Verify reCAPTCHA with Google
-    const RECAPTCHA_SECRET_KEY = '6Lfu_PsrAAAAAIFZippwFCqSfhShu1ZW7_cjpQU-'
+    // Verify reCAPTCHA v2 with Google
+    const RECAPTCHA_SECRET_KEY = '6LfUD_wrAAAAAHd6Rx4AhZPei9qeq5U_ztKyu5k0';
     const verifyResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `secret=${RECAPTCHA_SECRET_KEY}&response=${encodeURIComponent(captcha)}`
     })
     const verifyResult = await verifyResponse.json()
-    if (!verifyResult.success || typeof verifyResult.score !== 'number' || verifyResult.score < 0.5) {
-      console.warn('Blocked submission: Low reCAPTCHA v3 score', { score: verifyResult.score, action: verifyResult.action })
-      return NextResponse.json({ error: 'reCAPTCHA verification failed. Are you a bot?' }, { status: 403 })
-    }
-    if (verifyResult.action && !(verifyResult.action === 'submit_newsletter' || verifyResult.action === 'submit_starter')) {
-      console.warn('Blocked submission: Unexpected reCAPTCHA action', { action: verifyResult.action })
-      return NextResponse.json({ error: 'Suspicious activity detected.' }, { status: 403 })
+    if (!verifyResult.success) {
+      return NextResponse.json({ error: 'reCAPTCHA verification failed. Please try again.' }, { status: 403 })
     }
     
     const ip = getClientIP(request)
