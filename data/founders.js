@@ -50,6 +50,26 @@ const foundersData = [
     ]
   },
   {
+    name: "Melanie Perkins",
+    slug: "melanie-perkins",
+    shortBio: "Co-founder of Canva",
+    company: "Canva",
+    industry: "Design & Technology",
+    image: "/founders/Melanie_Perkins.jpeg",
+    bio: [
+      "Melanie Perkins revolutionized graphic design by co-founding Canva, making professional design accessible to everyone. Born in 1987 in Perth, Australia, Melanie's journey began with a simple observation: graphic design software was too complicated and expensive for most people to use.",
+      "While studying at the University of Western Australia, Melanie worked as a tutor teaching students how to use design software. She noticed that students found programs like Photoshop and InDesign overwhelming and difficult to learn. This frustration sparked an idea: what if design software could be as simple and intuitive as using Facebook?",
+      "In 2007, at just 19 years old, Melanie started her first business, Fusion Books, an online school yearbook design platform. This venture taught her valuable lessons about running a business and confirmed her belief that design tools could be made much more user-friendly.",
+      "The success of Fusion Books gave Melanie the confidence to pursue her bigger vision. In 2012, she co-founded Canva with her partner Cliff Obrecht and technical co-founder Cameron Adams. The company's mission was clear: to democratize design by making it accessible to everyone, not just professionals.",
+      "Canva's approach was revolutionary. Instead of complex software with steep learning curves, they created a web-based platform with drag-and-drop functionality, thousands of templates, and an intuitive interface. Users could create professional-quality designs without any prior design experience.",
+      "The company's growth was remarkable. By 2018, Canva had reached 10 million users. By 2021, that number had grown to over 60 million monthly active users across 190 countries. The platform became especially popular during the COVID-19 pandemic as people and businesses needed to create digital content quickly.",
+      "What sets Melanie apart is her focus on user experience and accessibility. She understood that most people don't want to become professional designers—they just want to create beautiful content for their personal or business needs. Canva's freemium model made it possible for anyone to start designing immediately.",
+      "Under Melanie's leadership as CEO, Canva has expanded beyond basic design tools to include features like video editing, presentations, and collaborative workspaces. The company has also maintained its commitment to education, offering free access to schools and nonprofits.",
+      "In 2021, Canva achieved unicorn status with a valuation of $40 billion, making it one of the most valuable private companies in Australia. Melanie's success has made her one of Australia's youngest female billionaires and a role model for aspiring entrepreneurs.",
+      "Melanie's story demonstrates how identifying a common frustration and solving it with a user-centered approach can lead to extraordinary success. By making design accessible to everyone, she has empowered millions of people to create professional-quality content and express their creativity."
+    ]
+  },
+  {
     name: "Daniel Ek",
     slug: "daniel-ek",
     shortBio: "Founder of Spotify",

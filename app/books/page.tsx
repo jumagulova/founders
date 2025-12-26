@@ -34,11 +34,11 @@ export default function Books() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-black mb-16 text-center bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-black mb-10 text-center bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
               Available Now
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"> 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10"> 
               {availableBooks.map((book) => (
                 <div key={book.slug} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
                   {book.image ? (

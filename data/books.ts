@@ -10,7 +10,7 @@ const books: Book[] = [
     coverImage: '/books/lego.jpg',
     image: '/books/lego.jpg',
     status: 'available',
-    amazonLink: 'https://www.amazon.com/Ole-Kirk-Kristiansen-Biographies-Founders/dp/B0F6S86V8G',
+    amazonLink: 'https://www.amazon.com/dp/B0F6S86V8G?maas=maas_adg_C956EFD8C147B08A0BBEDA6998C946D4_afap_abs&ref_=aa_maas&tag=maas',
     rating: {
       stars: 4.8,
       reviews: 51
@@ -25,7 +25,7 @@ const books: Book[] = [
     coverImage: '/books/nike.jpg',
     image: '/books/nike.jpg',
     status: 'available',
-    amazonLink: 'https://www.amazon.com/Phil-Knight-Founder-Biographies-Founders/dp/B0F6V4KCVQ',
+    amazonLink: 'https://www.amazon.com/dp/B0F6V4KCVQ?maas=maas_adg_C5A83EFE9F7724A7D787EF73216E0C3C_afap_abs&ref_=aa_maas&tag=maas',
     rating: {
       stars: 4.8,
       reviews: 52
@@ -40,7 +40,7 @@ const books: Book[] = [
     coverImage: '/books/american_girl.png',
     image: '/books/american_girl.png',
     status: 'available',
-    amazonLink: 'https://www.amazon.com/Pleasant-Rowland-American-Biographies-Founders/dp/B0F6SKR9BJ/',
+    amazonLink: 'https://www.amazon.com/dp/B0F6SKR9BJ?maas=maas_adg_BA77858D9671BB4BFE8BEEAB917F5E17_afap_abs&ref_=aa_maas&tag=maas',
     rating: {
       stars: 4.8,
       reviews: 48
@@ -52,8 +52,10 @@ const books: Book[] = [
     slug: 'melanie-perkins',
     author: 'Jan J.',
     description: 'Explore the story of how Melanie Perkins co-founded the design platform Canva.',
-    coverImage: '',
-    status: 'coming soon'
+    coverImage: '/books/Canva.jpg',
+    image: '/books/Canva.jpg',
+    status: 'available',
+    amazonLink: 'https://www.amazon.com/dp/B0G3HPP3WN?maas=maas_adg_D5A0D49D2DCC996D0B662C4A572CA491_afap_abs&ref_=aa_maas&tag=maas'
   },
   {
     id: 'reed-hastings',
