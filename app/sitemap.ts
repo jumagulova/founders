@@ -20,7 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: 'monthly' as 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/founders`, lastModified: now, changeFrequency: 'monthly' as 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/educators`, lastModified: now, changeFrequency: 'monthly' as 'monthly', priority: 0.6 },
-    { url: `${BASE_URL}/newsletter`, lastModified: now, changeFrequency: 'monthly' as 'monthly', priority: 0.5 }, 
     { url: `${BASE_URL}/privacy`, lastModified: now, changeFrequency: 'yearly' as 'yearly', priority: 0.3 },
     { url: `${BASE_URL}/terms`, lastModified: now, changeFrequency: 'yearly' as 'yearly', priority: 0.3 },
     // Add any other static pages here if they exist

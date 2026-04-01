@@ -166,23 +166,23 @@ const foundersData = [
     ]
   },
   {
-    name: "Melanie Perkins",
-    slug: "melanie-perkins",
-    shortBio: "Co-founder of Canva",
-    company: "Canva",
-    industry: "Design & Technology",
-    image: "/founders/Melanie_Perkins.jpeg",
+    name: "Reed Hastings",
+    slug: "reed-hastings",
+    shortBio: "Co-founder of Netflix",
+    company: "Netflix",
+    industry: "Entertainment & Technology",
+    image: "/logo.png",
     bio: [
-      "Melanie Perkins revolutionized graphic design by co-founding Canva, making professional design accessible to everyone. Born in 1987 in Perth, Australia, Melanie's journey began with a simple observation: graphic design software was too complicated and expensive for most people to use.",
-      "While studying at the University of Western Australia, Melanie worked as a tutor teaching students how to use design software. She noticed that students found programs like Photoshop and InDesign overwhelming and difficult to learn. This frustration sparked an idea: what if design software could be as simple and intuitive as using Facebook?",
-      "In 2007, at just 19 years old, Melanie started her first business, Fusion Books, an online school yearbook design platform. This venture taught her valuable lessons about running a business and confirmed her belief that design tools could be made much more user-friendly.",
-      "The success of Fusion Books gave Melanie the confidence to pursue her bigger vision. In 2012, she co-founded Canva with her partner Cliff Obrecht and technical co-founder Cameron Adams. The company's mission was clear: to democratize design by making it accessible to everyone, not just professionals.",
-      "Canva's approach was revolutionary. Instead of complex software with steep learning curves, they created a web-based platform with drag-and-drop functionality, thousands of templates, and an intuitive interface. Users could create professional-quality designs without any prior design experience.",
-      "The company's growth was remarkable. By 2018, Canva had reached 10 million users. By 2021, that number had grown to over 60 million monthly active users across 190 countries. The platform became especially popular during the COVID-19 pandemic as people and businesses needed to create digital content quickly.",
-      "What sets Melanie apart is her focus on user experience and accessibility. She understood that most people don't want to become professional designers—they just want to create beautiful content for their personal or business needs. Canva's freemium model made it possible for anyone to start designing immediately.",
-      "Under Melanie's leadership as CEO, Canva has expanded beyond basic design tools to include features like video editing, presentations, and collaborative workspaces. The company has also maintained its commitment to education, offering free access to schools and nonprofits.",
-      "In 2021, Canva achieved unicorn status with a valuation of $40 billion, making it one of the most valuable private companies in Australia. Melanie's success has made her one of Australia's youngest female billionaires and a role model for aspiring entrepreneurs.",
-      "Melanie's story demonstrates how identifying a common frustration and solving it with a user-centered approach can lead to extraordinary success. By making design accessible to everyone, she has empowered millions of people to create professional-quality content and express their creativity."
+      "Reed Hastings co-founded Netflix and transformed how the world watches movies and TV shows, turning a simple DVD rental idea into a global streaming empire. Born in 1960 in Boston, Massachusetts, Reed developed an early passion for mathematics and problem-solving that would later shape his approach to business.",
+      "After earning a degree in mathematics from Bowdoin College, Reed served as a Peace Corps volunteer in Swaziland, teaching math. He returned to the U.S. to earn a master's degree in computer science from Stanford University, then founded his first company, Pure Software, in 1991. Pure Software created tools that helped programmers find bugs in their code, and Reed sold it for $750 million in 1997.",
+      "The idea for Netflix came from a frustration many people shared: late fees at video rental stores. According to the popular origin story, Reed was charged a $40 late fee for returning a copy of Apollo 13 late to Blockbuster. He thought there had to be a better way. In 1997, he co-founded Netflix with Marc Randolph, starting with a simple concept: rent DVDs by mail with no late fees.",
+      "The early Netflix model was straightforward—customers ordered DVDs online, received them by mail, and returned them in prepaid envelopes whenever they were done. There were no due dates and no late fees. It was a hit with movie lovers who valued convenience and choice.",
+      "Reed's most visionary move came in 2007, when Netflix launched its streaming service. While most people were still renting physical discs, Reed saw that the internet would change everything. Instead of waiting for change to happen, he led Netflix to embrace it early, allowing subscribers to watch movies and TV shows instantly on their computers.",
+      "The transition wasn't without risk. In 2011, Reed made the controversial decision to split Netflix into two services—streaming and DVD—and briefly rename the DVD service 'Qwikster.' Customers were upset, the stock dropped dramatically, and Reed publicly apologized. It was a rare misstep, but he quickly reversed course and focused entirely on streaming.",
+      "Netflix's next bold move was creating its own original content. Starting with House of Cards in 2013, Netflix began producing award-winning shows and movies that attracted subscribers around the world. This shift from distributor to creator changed the entire entertainment industry.",
+      "Under Reed's leadership, Netflix grew from a small DVD-by-mail service in the U.S. to a global streaming platform with over 260 million subscribers in more than 190 countries. The company has won hundreds of Emmy Awards and changed how studios, directors, and actors think about making content.",
+      "Reed stepped down as CEO in 2023, transitioning to executive chairman, but his impact on entertainment and technology is permanent. He demonstrated that the willingness to reinvent your own business—even when it's already successful—is what separates great companies from good ones.",
+      "Reed's story teaches young readers an important lesson: sometimes the best way to solve a problem is to completely reimagine how things are done, even if it means changing your plan along the way."
     ]
   }
 ];

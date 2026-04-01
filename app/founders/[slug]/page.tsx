@@ -237,8 +237,8 @@ export default function FounderPage({ params }: { params: { slug: string } }) {
             <Link href="/books" className="px-8 py-3 bg-white text-blue-600 rounded-full font-medium hover:bg-blue-50 transition-colors">
               Explore Our Books
             </Link>
-            <Link href="/newsletter" className="px-8 py-3 bg-blue-700 text-white rounded-full font-medium hover:bg-blue-800 transition-colors">
-              Join Our Newsletter
+            <Link href="/#starter-pack" className="px-8 py-3 bg-blue-700 text-white rounded-full font-medium hover:bg-blue-800 transition-colors">
+              Get Free Starter Pack
             </Link>
           </div>
         </div>
