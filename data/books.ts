@@ -108,8 +108,10 @@ const books: Book[] = [
     slug: 'markus-persson',
     author: 'Jan J.',
     description: 'The story of Notch and the creation of the global phenomenon Minecraft.',
-    coverImage: '',
-    status: 'coming soon'
+    coverImage: '/books/minecraft.jpg',
+    image: '/books/minecraft.jpg',
+    status: 'available',
+    amazonLink: 'https://www.amazon.com/dp/B0GX34NN2C',
   },
   {
     id: 'daniel-ek',
