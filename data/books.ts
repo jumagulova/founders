@@ -13,7 +13,7 @@ const books: Book[] = [
     amazonLink: 'https://www.amazon.com/dp/B0F6S86V8G?maas=maas_adg_C956EFD8C147B08A0BBEDA6998C946D4_afap_abs&ref_=aa_maas&tag=maas',
     rating: {
       stars: 4.8,
-      reviews: 51
+      reviews: 79
     }
   },
   {
@@ -55,7 +55,11 @@ const books: Book[] = [
     coverImage: '/books/Canva.jpg',
     image: '/books/Canva.jpg',
     status: 'available',
-    amazonLink: 'https://www.amazon.com/dp/B0G3HPP3WN?maas=maas_adg_D5A0D49D2DCC996D0B662C4A572CA491_afap_abs&ref_=aa_maas&tag=maas'
+    amazonLink: 'https://www.amazon.com/dp/B0G3HPP3WN?maas=maas_adg_D5A0D49D2DCC996D0B662C4A572CA491_afap_abs&ref_=aa_maas&tag=maas',
+    rating: {
+      stars: 4.6,
+      reviews: 17
+    }
   },
   {
     id: 'reed-hastings',
