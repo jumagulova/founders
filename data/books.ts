@@ -104,14 +104,18 @@ const books: Book[] = [
   },
   {
     id: 'markus-persson',
-    title: 'Markus Persson: Creator of Minecraft',
+    title: 'Markus Persson: Founder of Minecraft',
     slug: 'markus-persson',
     author: 'Jan J.',
-    description: 'The story of Notch and the creation of the global phenomenon Minecraft.',
+    description: 'Your child has spent hundreds of hours in Minecraft — now they can read the story behind it. Follow Markus "Notch" Persson from a difficult childhood in Sweden to building the best-selling video game in history.',
     coverImage: '/books/minecraft.jpg',
     image: '/books/minecraft.jpg',
     status: 'available',
     amazonLink: 'https://www.amazon.com/dp/B0GX34NN2C',
+    rating: {
+      stars: 5.0,
+      reviews: 1
+    }
   },
   {
     id: 'daniel-ek',
