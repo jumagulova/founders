@@ -1,35 +1,10 @@
-"use client"
-
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import booksData from '@/data/books' // Import book data
-import ReCAPTCHA from 'react-google-recaptcha'
+import booksData from '@/data/books'
 
 export default function Home() {
-  const [formSubmitted, setFormSubmitted] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [starterCaptchaError, setStarterCaptchaError] = useState<string | null>(null)
-  const RECAPTCHA_SITE_KEY = '6LfUD_wrAAAAAC7pxceK44HurQ663eiVS9G-UogW'
-
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
-    script.async = true
-    script.onload = () => {
-      // grecaptchaReady is no longer needed for v2, but keeping it for now
-      // setGrecaptchaReady(true) 
-    }
-    document.body.appendChild(script)
-    return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
-
   // Filter for available books to feature
-  const featuredBooks = booksData.filter(book => book.status === 'available').slice(0, 3); // Show top 3 available
+  const featuredBooks = booksData.filter(book => book.status === 'available').slice(0, 3);
 
   return (
     <div className="bg-white font-sans">
@@ -259,113 +234,44 @@ export default function Home() {
               </p>
             </div>
             
-            {!formSubmitted ? (
-              <>
-                <form
-                  onSubmit={async (e) => {
-                    e.preventDefault()
-                    setErrorMessage(null)
-                    setStarterCaptchaError(null)
-                    setIsSubmitting(true)
-                    if (!captchaToken) {
-                      setStarterCaptchaError('Please verify you are not a robot.')
-                      setIsSubmitting(false)
-                      return
-                    }
-                    const formData = new FormData(e.currentTarget as HTMLFormElement)
-                    const name = formData.get('entry.1198178546')
-                    const email = formData.get('entry.1500794759')
-                    try {
-                      const response = await fetch('/api/submit-form', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          name: name?.toString() || '',
-                          email: email?.toString() || '',
-                          formType: 'starter',
-                          captcha: captchaToken
-                        }),
-                      })
-                      if (response.ok) {
-                        setFormSubmitted(true)
-                        setIsSubmitting(false)
-                      } else {
-                        const errorData = await response.json()
-                        setErrorMessage(errorData.error || 'Submission failed. Please try again.')
-                        setIsSubmitting(false)
-                      }
-                    } catch (error) {
-                      setErrorMessage('Network error. Please try again.')
-                      setIsSubmitting(false)
-                    }
-                  }}
-                  className="max-w-xl mx-auto"
-                >
-                <div className="mb-6">
-                  <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="entry.1198178546" 
-                    required 
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                <div className="mb-8">
-                  <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email Address</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="entry.1500794759" 
-                    required 
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
-                    placeholder="Enter your email"
-                  />
-                </div>
-                <div className="mb-4 flex flex-col items-center">
-                  <ReCAPTCHA
-                    sitekey={RECAPTCHA_SITE_KEY}
-                    onChange={setCaptchaToken}
-                    onExpired={() => setCaptchaToken(null)}
-                  />
-                  {starterCaptchaError && (
-                    <p className="text-xs text-red-500 mt-2">{starterCaptchaError}</p>
-                  )}
-                </div>
-                <div className="text-center">
-                  <button 
-                    type="submit" 
-                    disabled={isSubmitting}
-                    className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 w-full md:w-auto disabled:opacity-70"
-                  >
-                    {isSubmitting ? 'Sending...' : 'Get Starter Pack'}
-                  </button>
-                </div>
-                <p className="text-gray-500 text-sm mt-4 text-center">
-                  We respect your privacy and will never share your information.
-                </p>
-                {errorMessage && (
-                  <p className="text-sm text-red-500 mt-2 text-center">{errorMessage}</p>
-                )}
-                </form>
-              </>
-            ) : (
-              <div className="text-center py-8 max-w-xl mx-auto">
-                <div className="mb-6 text-green-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Thank You!</h3>
-                <p className="text-gray-600 mb-6">
-                  Your Starter Pack is on its way to your inbox! Please check your email in the next few minutes.
-                </p>
-                <p className="text-gray-600">
-                  If you don't see it, please check your spam folder or contact us at hello[at]foundersforkids.com
-                </p>
+            <form
+              method="post"
+              action="https://systeme.io/embedded/41395999/subscription"
+              className="max-w-xl mx-auto"
+            >
+              <div className="mb-6">
+                <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
+                  placeholder="Enter your name"
+                />
               </div>
-            )}
+              <div className="mb-8">
+                <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email Address</label>
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div className="text-center">
+                <button
+                  type="submit"
+                  className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 w-full md:w-auto"
+                >
+                  Get Starter Pack
+                </button>
+              </div>
+              <p className="text-gray-500 text-sm mt-4 text-center">
+                We respect your privacy and will never share your information.
+              </p>
+            </form>
           </div>
         </div>
       </section>
