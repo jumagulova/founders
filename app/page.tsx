@@ -244,7 +244,7 @@ export default function Home() {
                 <input
                   type="text"
                   id="name"
-                  name="name"
+                  name="first_name"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
                   placeholder="Enter your name"
                 />
