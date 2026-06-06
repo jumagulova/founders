@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import booksData from '@/data/books'
+import StarterPackForm from '@/components/StarterPackForm'
 
 export default function Home() {
   // Filter for available books to feature
@@ -234,44 +235,10 @@ export default function Home() {
               </p>
             </div>
             
-            <form
-              method="post"
-              action="https://systeme.io/embedded/41395999/subscription"
-              className="max-w-xl mx-auto"
-            >
-              <div className="mb-6">
-                <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="first_name"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
-                  placeholder="Enter your name"
-                />
-              </div>
-              <div className="mb-8">
-                <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email Address</label>
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors"
-                  placeholder="Enter your email"
-                />
-              </div>
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 w-full md:w-auto"
-                >
-                  Get Starter Pack
-                </button>
-              </div>
-              <p className="text-gray-500 text-sm mt-4 text-center">
-                We respect your privacy and will never share your information.
-              </p>
-            </form>
+            <StarterPackForm />
+            <p className="text-gray-500 text-sm mt-4 text-center">
+              We respect your privacy and will never share your information.
+            </p>
           </div>
         </div>
       </section>

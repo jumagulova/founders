@@ -1,76 +1,17 @@
-"use client"
+'use client'
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, FormEvent, useEffect } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
+import { useEffect, useState } from 'react'
+import NewsletterSignup from '@/components/NewsletterSignup'
 
 export default function Footer() {
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
-  const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false)
-  const [timestamp, setTimestamp] = useState('')
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
-  const [captchaError, setCaptchaError] = useState<string | null>(null)
-  const RECAPTCHA_SITE_KEY = '6LfUD_wrAAAAAC7pxceK44HurQ663eiVS9G-UogW'
-  
-  useEffect(() => {
-    // Generate a random timestamp to force reload of image
-    setTimestamp(Date.now().toString())
-  }, [])
+  const [currentYear, setCurrentYear] = useState('2026')
 
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`
-    script.async = true
-    script.onload = () => {
-      // setGrecaptchaReady(true) // This line is removed
-    }
-    document.body.appendChild(script)
-    return () => {
-      document.body.removeChild(script)
-    }
+    setCurrentYear(new Date().getFullYear().toString())
   }, [])
 
-  const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsNewsletterSubmitting(true)
-    setCaptchaError(null)
-    if (!captchaToken) {
-      setCaptchaError('Please verify you are not a robot.')
-      setIsNewsletterSubmitting(false)
-      return
-    }
-    const formData = new FormData(e.currentTarget)
-    const name = formData.get('name')
-    const email = formData.get('email')
-    try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name?.toString() || '',
-          email: email?.toString() || '',
-          formType: 'newsletter',
-          captcha: captchaToken
-        })
-      })
-      if (response.ok) {
-        setNewsletterSubmitted(true)
-        setIsNewsletterSubmitting(false)
-      } else {
-        const errorData = await response.json()
-        setCaptchaError(errorData.error || 'Submission failed. Please try again.')
-        setIsNewsletterSubmitting(false)
-      }
-    } catch (error) {
-      setCaptchaError('Network error. Please try again.')
-      setIsNewsletterSubmitting(false)
-    }
-  }
-
-  const currentYear = new Date().getFullYear();
-  
   return (
     <footer className="bg-gradient-to-br from-indigo-50 to-white pt-16 pb-8">
       <div className="container mx-auto px-6">
@@ -79,9 +20,9 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1">
             <Link href="/">
-              <Image 
+              <Image
                 src="/logo.png"
-                alt="Founders for Kids Logo" 
+                alt="Founders for Kids Logo"
                 width={180}
                 height={45}
                 className="h-9 w-auto mb-4"
@@ -108,56 +49,28 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          
+
           {/* Quick Links */}
           <div className="col-span-1">
             <h3 className="text-gray-900 font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/books" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  Books
-                </Link>
-              </li>
-              <li>
-                <Link href="/educators" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  For Educators
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  About Us
-                </Link>
-              </li>
+              <li><Link href="/" className="text-gray-600 hover:text-purple-600 transition-colors">Home</Link></li>
+              <li><Link href="/books" className="text-gray-600 hover:text-purple-600 transition-colors">Books</Link></li>
+              <li><Link href="/educators" className="text-gray-600 hover:text-purple-600 transition-colors">For Educators</Link></li>
+              <li><Link href="/about" className="text-gray-600 hover:text-purple-600 transition-colors">About Us</Link></li>
             </ul>
           </div>
-          
+
           {/* Resources */}
           <div className="col-span-1">
             <h3 className="text-gray-900 font-bold mb-4">Resources</h3>
             <ul className="space-y-2">
-              <li>
-                <a href="/#starter-pack" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  Starter Pack
-                </a>
-              </li>
-              <li>
-                <Link href="/founders" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  Founders
-                </Link>
-              </li>
-              <li>
-                <Link href="/educators" className="text-gray-600 hover:text-purple-600 transition-colors">
-                  Educator Resources
-                </Link>
-              </li>
+              <li><a href="/#starter-pack" className="text-gray-600 hover:text-purple-600 transition-colors">Starter Pack</a></li>
+              <li><Link href="/founders" className="text-gray-600 hover:text-purple-600 transition-colors">Founders</Link></li>
+              <li><Link href="/educators" className="text-gray-600 hover:text-purple-600 transition-colors">Educator Resources</Link></li>
             </ul>
           </div>
-          
+
           {/* Contact */}
           <div className="col-span-1">
             <h3 className="text-gray-900 font-bold mb-4">Contact Us</h3>
@@ -166,74 +79,24 @@ export default function Footer() {
                 <svg className="h-5 w-5 text-purple-600 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="text-gray-600">
-                  hello[at]foundersforkids.com
-                </span>
+                <span className="text-gray-600">hello[at]foundersforkids.com</span>
               </li>
             </ul>
           </div>
         </div>
-        
+
         {/* Newsletter Signup */}
         <div className="border-t border-gray-200 pt-8 pb-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h3 className="text-gray-900 font-bold mb-2">Be the First to Know</h3>
-              <p className="text-gray-600 text-sm">Join our newsletter to get updates on new releases, special offers, and exclusive content.</p>
-            </div>
-            
-            {!newsletterSubmitted ? (
-              <div className="w-full md:w-auto">
-                <form onSubmit={handleNewsletterSubmit} className="flex flex-col items-center">
-                  <div className="flex">
-                  <input 
-                    type="text" 
-                    name="name"
-                    placeholder="Your name (optional)" 
-                    className="px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm rounded-l-full"
-                  />
-                  <input 
-                    type="email" 
-                    name="email"
-                    placeholder="Your email" 
-                    required
-                    className="px-4 py-2 border-t border-b border-r border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 text-sm"
-                  />
-                  <button 
-                    type="submit"
-                    disabled={isNewsletterSubmitting}
-                    className="bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 text-white px-4 py-2 rounded-r-full text-sm font-medium transition-colors"
-                  >
-                    {isNewsletterSubmitting ? 'SENDING...' : 'SIGN UP'}
-                  </button>
-                  </div>
-                  <div className="mt-3 flex flex-col items-center">
-                    <ReCAPTCHA
-                      sitekey={RECAPTCHA_SITE_KEY}
-                      onChange={setCaptchaToken}
-                      onExpired={() => setCaptchaToken(null)}
-                    />
-                    {captchaError && <p className="text-xs text-red-500 mt-2">{captchaError}</p>}
-                  </div>
-                  {errorMessage && (
-                    <p className="text-xs text-red-500 mt-2">{errorMessage}</p>
-                  )}
-                </form>
-              </div>
-            ) : (
-              <div className="w-full md:w-auto bg-green-50 border border-green-100 rounded-lg p-3 flex items-center text-green-600">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div>
-                  <p className="font-medium text-sm">Thank you for subscribing!</p>
-                  <p className="text-xs text-green-500">We'll keep you updated on new books and resources.</p>
-                </div>
-              </div>
-            )}
+          <div className="text-center mb-4">
+            <h3 className="text-gray-900 font-bold text-lg mb-1">Be the First to Know</h3>
+            <p className="text-gray-600 text-sm">Join our newsletter to get updates on new releases, special offers, and exclusive content.</p>
           </div>
+          <NewsletterSignup />
+          <p className="text-gray-500 text-xs text-center mt-3">
+            We respect your privacy and will never share your information.
+          </p>
         </div>
-        
+
         {/* Copyright */}
         <div className="border-t border-gray-200 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -241,12 +104,8 @@ export default function Footer() {
               © {currentYear} Founders for Kids. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <Link href="/privacy" className="text-gray-500 hover:text-purple-600 text-sm transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-gray-500 hover:text-purple-600 text-sm transition-colors">
-                Terms of Service
-              </Link>
+              <Link href="/privacy" className="text-gray-500 hover:text-purple-600 text-sm transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="text-gray-500 hover:text-purple-600 text-sm transition-colors">Terms of Service</Link>
             </div>
           </div>
           <p className="text-gray-400 text-sm text-center mt-6">
@@ -256,4 +115,4 @@ export default function Footer() {
       </div>
     </footer>
   )
-} 
+}
