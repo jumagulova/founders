@@ -3,6 +3,14 @@ import Link from 'next/link'
 import booksData from '@/data/books'
 import StarterPackForm from '@/components/StarterPackForm'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://foundersforkids.com'
+
+export const metadata = {
+  title: { absolute: 'Founders for Kids — True Stories of Dreamers, Doers, and Builders' },
+  description: 'Biographies of famous founders like the creators of LEGO, Nike, and Minecraft, written for kids ages 8–12. Books, founder stories, and a free starter pack for young entrepreneurs.',
+  alternates: { canonical: BASE_URL },
+}
+
 export default function Home() {
   // Filter for available books to feature
   const featuredBooks = booksData.filter(book => book.status === 'available').slice(0, 3);

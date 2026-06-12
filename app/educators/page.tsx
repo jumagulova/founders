@@ -4,8 +4,9 @@ import books from '@/data/books'
 import EducatorsOptIn from '@/components/EducatorsOptIn'
 
 export const metadata = {
-  title: 'For Educators',
-  description: 'Free, classroom-ready activity packs inspired by real founder stories. Download lesson plans, worksheets, and post-reading guides for your class.'
+  title: 'Free Entrepreneurship Lesson Plans for Educators',
+  description: 'Free, classroom-ready activity packs inspired by real founder stories. Download lesson plans, worksheets, and post-reading guides for your class.',
+  alternates: { canonical: 'https://foundersforkids.com/educators' },
 }
 
 export default function EducatorsPage() {

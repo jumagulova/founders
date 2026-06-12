@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
@@ -64,10 +64,11 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/site.webmanifest',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 const organizationStructuredData = {
@@ -76,9 +77,20 @@ const organizationStructuredData = {
   name: 'Founders for Kids',
   url: BASE_URL,
   logo: `${BASE_URL}/logo.png`,
-  contactPoint: {
-    '@type': 'ContactPoint',
-  }
+  description: 'Founders for Kids publishes biographies of famous founders and entrepreneurs, written for kids ages 8–12.',
+  email: 'hello@foundersforkids.com',
+  sameAs: [
+    'https://www.amazon.com/stores/author/B0F6THKVQ1',
+  ],
+}
+
+const websiteStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Founders for Kids',
+  url: BASE_URL,
+  description: 'True stories of founders and entrepreneurs, written for kids.',
+  publisher: { '@type': 'Organization', name: 'Founders for Kids' },
 }
 
 export default function RootLayout({
@@ -92,6 +104,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
         />
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`

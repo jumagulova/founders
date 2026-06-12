@@ -4,9 +4,12 @@ import NewsletterSignup from '@/components/NewsletterSignup'
 import booksData from '@/data/books'
 import { Book } from '@/types'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://foundersforkids.com'
+
 export const metadata = {
-  title: 'Books | Founders for Kids',
-  description: 'Explore biographies of inspiring founders like Pleasant Rowland, Phil Knight, Ole Kirk Kristiansen, and more.'
+  title: 'Founder Biography Books for Kids Ages 8–12',
+  description: 'Kids\' biographies of the founders behind LEGO, Nike, American Girl, Canva, and Minecraft. Real stories of how famous companies began, written for ages 8–12.',
+  alternates: { canonical: `${BASE_URL}/books` },
 }
 
 // Reusable button style from founders page
@@ -16,8 +19,45 @@ export default function Books() {
   const availableBooks = booksData.filter(book => book.status === 'available');
   const comingSoonBooks = booksData.filter(book => book.status === 'coming soon');
 
+  const booksStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Founders for Kids Books',
+    itemListElement: availableBooks.map((book, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Book',
+        name: book.title,
+        author: { '@type': 'Person', name: book.author },
+        description: book.description,
+        image: book.image ? `${BASE_URL}${book.image}` : undefined,
+        publisher: { '@type': 'Organization', name: 'Founders for Kids' },
+        inLanguage: 'en',
+        audience: { '@type': 'PeopleAudience', suggestedMinAge: 8, suggestedMaxAge: 12 },
+        ...(book.rating
+          ? {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: book.rating.stars,
+                reviewCount: book.rating.reviews,
+                bestRating: 5,
+              },
+            }
+          : {}),
+        ...(book.amazonLink
+          ? { offers: { '@type': 'Offer', url: book.amazonLink, availability: 'https://schema.org/InStock' } }
+          : {}),
+      },
+    })),
+  }
+
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(booksStructuredData) }}
+      />
       {/* Header Section */}
       <section className="bg-gradient-to-br from-indigo-100 to-white py-16">
         <div className="container mx-auto px-6 text-center">

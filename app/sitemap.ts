@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 import foundersData from '@/data/founders' // Ensure this path points to your founder data file
+import { getAllCategories } from '@/lib/categories'
 // Assuming you might have book data similarly structured
-// import booksData from '@/data/books' 
+// import booksData from '@/data/books'
 
 // Use the production domain
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://foundersforkids.com'; 
@@ -59,10 +60,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   */
 
+  // Generate routes for each founder category hub page
+  let categoryRoutes: MetadataRoute.Sitemap = [];
+  try {
+    categoryRoutes = getAllCategories().map((category) => ({
+      url: `${BASE_URL}/founders/category/${category.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as 'monthly',
+      priority: 0.5,
+    }));
+  } catch (error) {
+    console.error('Sitemap generation: Error mapping categories:', error);
+  }
+
   // Combine all routes into the final sitemap
   const allRoutes = [
     ...staticRoutes,
     ...founderRoutes,
+    ...categoryRoutes,
     // ...bookRoutes, // Uncomment if you add book routes
   ];
 

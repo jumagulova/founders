@@ -1,10 +1,14 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import foundersData from '@/data/founders'
+import FounderCard from '@/components/FounderCard'
+import { getAllCategories } from '@/lib/categories'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://foundersforkids.com'
 
 export const metadata = {
-  title: 'Founders | Founders for Kids',
-  description: 'Meet the dreamers and doers we celebrate in our Founders for Kids series.'
+  title: 'Famous Founders & Entrepreneurs — Biographies for Kids',
+  description: 'Meet 30 famous founders, from Walt Disney to the creators of Minecraft, LEGO, and Pokémon. Kid-friendly biographies with facts, stories, and FAQs.',
+  alternates: { canonical: `${BASE_URL}/founders` },
 }
 
 // Define the consistent button style
@@ -12,49 +16,55 @@ const primaryButtonStyle = "px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-5
 const secondaryButtonStyle = "px-6 py-2 bg-white text-purple-600 border border-purple-300 rounded-full font-semibold text-sm hover:bg-purple-50 transition duration-300 inline-block text-center"; // Example secondary style
 
 export default function FoundersPage() {
+  const categories = getAllCategories()
+
+  const collectionStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Famous Founders & Entrepreneurs — Biographies for Kids',
+    url: `${BASE_URL}/founders`,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: foundersData.map((founder, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${BASE_URL}/founders/${founder.slug}`,
+        name: founder.name,
+      })),
+    },
+  }
+
   return (
     <main className="pt-16 pb-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionStructuredData) }}
+      />
       <div className="container mx-auto px-4">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center text-blue-600">Founders</h1>
         <p className="text-xl font-semibold text-gray-600 mb-4 text-center">
           Bold, Curious, and Building Big Ideas
         </p>
-        <p className="text-lg text-gray-700 mb-16 text-center max-w-3xl mx-auto">
+        <p className="text-lg text-gray-700 mb-8 text-center max-w-3xl mx-auto">
           Meet the dreamers and doers we celebrate in our series. They come from different places and moments in history, yet each had the courage to try something new. They often faced tough questions, doubters, and roadblocks. But they kept going.
         </p>
-        
+
+        {/* Browse by category */}
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
+          {categories.map((category) => (
+            <Link
+              key={category.slug}
+              href={`/founders/category/${category.slug}`}
+              className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium hover:bg-blue-100 transition-colors"
+            >
+              {category.label}
+            </Link>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {foundersData.map((founder) => (
-            <div key={founder.slug} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col justify-between hover:shadow-lg transition-shadow">
-              <div>
-                <div className="aspect-[3/4] relative bg-gray-100">
-                  <Image
-                    src={founder.image}
-                    alt={founder.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-2 text-blue-600">{founder.name}</h2>
-                  <p className="text-gray-600 mb-4">{founder.shortBio}</p>
-                  <div className="flex gap-2 mb-4">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                      {founder.industry}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="p-6 pt-0">
-                <Link 
-                  href={`/founders/${founder.slug}`}
-                  className={primaryButtonStyle}
-                >
-                  Read More
-                </Link>
-              </div>
-            </div>
+            <FounderCard key={founder.slug} founder={founder} />
           ))}
         </div>
         
